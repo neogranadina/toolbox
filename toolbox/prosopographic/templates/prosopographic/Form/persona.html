@@ -1,0 +1,93 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 shadow auth-forms-container">
+    <h2 class="mb-4">Persona</h2>
+    {% if perms.prosopographic.add_persona %}
+        <form method="post" class="form">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+                
+                {% bootstrap_field form.nombre %}
+                {% bootstrap_field form.apellidos %}
+                {% bootstrap_field form.nombre_completo %}
+                {% bootstrap_field form.condicion %}
+
+                {% bootstrap_field form.fecha_nacimiento %}
+                {% bootstrap_field form.fecha_defuncion %}
+                
+                <div class="mb-3">
+                    <label for="{{ form.lugar_nacimiento.id_for_label }}" class="form-label">{{ form.lugar_nacimiento.label }}</label>
+                    {{ form.lugar_nacimiento }}
+                    <button type="button" id="add_lugar_nacimiento" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir lugar"><i class="fas fa-map-marked"></i></button>
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.vecindad.id_for_label }}" class="form-label">{{ form.vecindad.label }}</label>
+                    {{ form.vecindad }}
+                    <button type="button" id="add_vecindad" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir lugar"><i class="fas fa-map-marked"></i></button>
+                </div>
+
+                
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary me-2">Guardar</button>
+                    <a href="{% url 'persona-browse' %}" class="btn btn-secondary" id="cancelButton">Cancelar</a>
+                </div>
+            </form>
+        </div>
+        </div>
+        </div>
+
+        <div class="modal fade" id="addLugarModal" tabindex="-1" aria-labelledby="addLugarModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <!-- Dynamic form content will be loaded here -->
+        
+                </div>
+            </div>
+        </div>
+        
+        
+        {% include '_cancel_warning.html' %}
+        
+        
+        {{ form.media }}
+        
+        
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                bindEventToButton('add_lugar_nacimiento', '#addLugarModal .modal-content', "{% url 'lugar-new' %}", "#newLugarForm", '/toolbox/Form/new/lugar/', 'id_lugar_nacimiento', '#addLugarModal');
+                bindEventToButton('add_vecindad', '#addLugarModal .modal-content', "{% url 'lugar-new' %}", "#newLugarForm", '/toolbox/Form/new/lugar/', 'id_vecindad', '#addLugarModal');
+            });
+            
+        </script>
+        
+        <script>
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        </script>
+        {% else %}
+    
+        {% if user.is_authenticated %}
+            {% include '_no_permission.html' %}
+        {% else %}
+        {% include '_no_registered.html' %}
+        {% endif %}
+        {% endif %}
+
+
+
+</div>
+
+    {% endblock content %}

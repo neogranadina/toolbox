@@ -1,0 +1,46 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h1>Lugar Detail</h1>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h2 class="card-title">Nombre: {{ lugar.nombre }}</h2>
+            
+            {% if lugar.lat and lugar.lon %}
+            <div id="map" style="height: 180px;"></div>
+            <script>
+                var lat = {{ lugar.lat }}
+                var lon = {{ lugar.lon }}
+                var map = L.map('map').setView([lat, lon], 13);
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+
+                var marker = L.marker([lat, lon]).addTo(map);
+                marker.bindPopup(`Lat: ${lat}. Lon: ${lon}`).openPopup();
+            </script>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="btn-group">
+        {% comment %} <a href="{% url 'lugar-browse' %}" class="btn btn-outline-secondary">Back</a>
+        {% if perms.prosopographic.add_lugar %}
+        <a href="{% url 'lugar-update' lugar.pk %}" class="btn btn-outline-primary">Edit</a>
+        {% endif %}
+        {% if perms.prosopographic.delete_lugar %}
+        <a href="{% url 'lugar-delete' lugar.pk %}" class="btn btn-outline-danger">Delete</a>
+        {% endif %} {% endcomment %}
+    </div>
+
+</div>
+
+
+
+{% endblock content %}

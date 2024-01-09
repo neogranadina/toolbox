@@ -1,0 +1,49 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h1>Entierro Detail</h1>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h2 class="card-title">Acta: {{ matrimonio.acta_matrimonio }}</h2>
+            <p class="card-text">Cónyugues: {{ matrimonio.esposo }} - {{ matrimonio.esposa }}</p>
+            <!-- ForeignKey Links -->
+            {% if matrimonio.lugar %}
+                <p>Lugar de matrimonio: <a href="{% url 'lugar-detail' matrimonio.lugar.pk %}">{{ matrimonio.lugar }}</a></p>
+            {% endif %}
+            {% if matrimonio.fecha_matrimonio %}
+            <p>Fecha de matrimonio: {{ matrimonio.fecha_matrimonio }}</p>
+            {% endif %}
+            
+            {% if bautismo.padre %}
+            <p>Padre: <a href="{% url 'persona-detail' bautismo.padre.pk %}">{{ bautismo.padre }}</a></p>
+            {% endif %}
+            {% if bautismo.madre %}
+            <p>Madre: <a href="{% url 'persona-detail' bautismo.madre.pk %}">{{ bautismo.madre }}</a></p>
+            {% endif %}
+            {% if bautismo.padrino %}
+            <p>Padrino: <a href="{% url 'persona-detail' bautismo.padrino.pk %}">{{ bautismo.padrino }}</a></p>
+            {% endif %}
+            {% if bautismo.madrina %}
+            <p>Madrina: <a href="{% url 'persona-detail' bautismo.madrina.pk %}">{{ bautismo.madrina }}</a></p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="btn-group">
+        <a href="{% url 'matrimonio-browse' %}" class="btn btn-outline-secondary">Back</a>
+        {% if perms.prosopographic.add_matrimonio %}
+        <a href="{% url 'matrimonio-update' matrimonio.pk %}" class="btn btn-outline-primary">Edit</a>
+        {% endif %}
+        {% if perms.prosopographic.delete_matrimonio %}
+        <a href="{% url 'matrimonio-delete' matrimonio.pk %}" class="btn btn-outline-danger">Delete</a>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock content %}

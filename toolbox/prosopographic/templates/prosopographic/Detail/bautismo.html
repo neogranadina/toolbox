@@ -1,0 +1,50 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h1>Bautismo Detail</h1>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h2 class="card-title">Acta: {{ bautismo.acta_bautismo }}</h2>
+            <p class="card-text">Bautizado: {{ bautismo.nombre_bautizado }}</p>
+            <!-- ForeignKey Links -->
+            {% if bautismo.lugar_bautismo %}
+                <p>Lugar de Bautismo: <a href="{% url 'lugar-detail' bautismo.lugar_bautismo.pk %}">{{ bautismo.lugar_bautismo }}</a></p>
+            {% endif %}
+            <p>Fecha de Bautismo: {{ bautismo.fecha_bautismo }}</p>
+            {% if bautismo.bautizado_procedencia %}
+            <p>Procedencia del Bautizado: <a href="{% url 'lugar-detail' bautismo.bautizado_procedencia.pk %}">{{ bautismo.bautizado_procedencia }}</a></p>
+            {% endif %}
+            
+            {% if bautismo.padre %}
+            <p>Padre: <a href="{% url 'persona-detail' bautismo.padre.pk %}">{{ bautismo.padre }}</a></p>
+            {% endif %}
+            {% if bautismo.madre %}
+            <p>Madre: <a href="{% url 'persona-detail' bautismo.madre.pk %}">{{ bautismo.madre }}</a></p>
+            {% endif %}
+            {% if bautismo.padrino %}
+            <p>Padrino: <a href="{% url 'persona-detail' bautismo.padrino.pk %}">{{ bautismo.padrino }}</a></p>
+            {% endif %}
+            {% if bautismo.madrina %}
+            <p>Madrina: <a href="{% url 'persona-detail' bautismo.madrina.pk %}">{{ bautismo.madrina }}</a></p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="btn-group">
+        <a href="{% url 'bautismo-browse' %}" class="btn btn-outline-secondary">Back</a>
+        {% if perms.prosopographic.add_bautismo %}
+        <a href="{% url 'bautismo-update' bautismo.pk %}" class="btn btn-outline-primary">Edit</a>
+        {% endif %}
+        {% if perms.prosopographic.delete_bautismo %}
+        <a href="{% url 'bautismo-delete' bautismo.pk %}" class="btn btn-outline-danger">Delete</a>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock content %}

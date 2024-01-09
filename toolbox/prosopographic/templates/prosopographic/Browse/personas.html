@@ -1,0 +1,51 @@
+
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container mt-4">
+    {% if perms.prosopographic.add_persona %}
+    <!-- Create New Object Button -->
+    <div class="text-end mb-3">
+        <a href="{% url 'persona-new' %}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Añadir un registro de Persona</a>
+    </div>
+    {% endif %}
+
+    <!-- Grid Layout for Objects -->
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for object in object_list %}
+        <div class="col">
+            <div class="card h-100" style="width: 16rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ object }}</h5>
+                    {% if object.fecha_nacimiento %}
+                    <p class="card-text">{{ object.fecha_nacimiento }}</p>
+                    {% else %}
+                    <p class="card-text">&nbsp;</p>
+                    {% endif%}
+                    {% if object.fecha_defuncion %}
+                    <p class="card-text"><i class="fas fa-cross"></i> {{ object.fecha_defuncion }}</p>
+                    {% else %}
+                    <p class="card-text">&nbsp;</p>
+                    {% endif %}
+                    <a href="{% url 'persona-detail' object.pk %}" class="btn btn-outline-secondary">Detalles</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col">
+            <div class="text-center">
+                <p>No objects yet.</p>
+                {% if perms.prosopographic.add_persona %}
+                <div class="text-end mb-3">
+                    <a href="{% url 'persona-new' %}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Añadir un registro de Bautismo</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock content %}

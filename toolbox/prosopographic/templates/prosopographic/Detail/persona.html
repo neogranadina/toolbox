@@ -1,0 +1,54 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h1>Persona Detail</h1>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h2 class="card-title">Nombre: {{ persona.nombre_completo }}</h2>
+            <p class="card-text"> {{ persona.nombre_bautizado }}</p>
+            <!-- ForeignKey Links -->
+            <h3><i class="fas fa-users"></i> Relaciones:</h3>
+        
+            {% for relationship in relationships %}
+                
+                    {% if relationship.left_person == persona %}
+                    <p>
+                    <i class="fas fa-people-arrows"></i>
+                        {{ persona.nombre_completo }} {{ relationship.get_relationship_type_display }} <a href="{% url 'persona-detail' relationship.right_person.pk %}">{{ relationship.right_person }}</a>
+                    </p>
+                    {% endif %}
+                
+            {% empty %}
+                No se encontraron relaciones.
+            {% endfor %}
+        
+            {% if perms.prosopographic.add_relationship %} <a href='{% url 'relationship-new' %}' class="btn btn-primary me-2"><i class="fas fa-people-arrows"></i> <i class="fas fa-plus"></i></a>{% endif %}
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="btn-group">
+        <a href="{% url 'persona-browse' %}" class="btn btn-outline-secondary">Back</a>
+        {% if perms.prosopographic.add_persona %}
+        <a href="{% url 'persona-update' persona.pk %}" class="btn btn-outline-primary">Edit</a>
+        {% endif %}
+        {% if perms.prosopographic.delete_persona %}
+        <a href="{% url 'persona-delete' persona.pk %}" class="btn btn-outline-danger">Delete</a>
+        {% endif %}
+    </div>
+
+</div>
+
+
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
+
+{% endblock content %}

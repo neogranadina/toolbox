@@ -1,0 +1,154 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 shadow auth-forms-container">
+    <h2 class="mb-4">Entierro</h2>
+    <form method="post" class="form">
+        {% csrf_token %}
+        {% include '_form_errors.html' %}
+        
+        <h3>Documento de entierro:</h3>
+    
+        <div class="mb-3">
+            <label for="{{ form.acta_entierro.id_for_label }}" class="form-label">{{ form.acta_entierro.label }}</label>
+            {{ form.acta_entierro }}
+            <button type="button" id="add_acta_entierro" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir documento"><i class="fas fa-file-medical"></i></button>
+        </div>
+
+        <h3>Datos del entierro:</h3>
+        {% bootstrap_field form.fecha_entierro %}
+        
+        <div class="mb-3">
+            <label for="{{ form.lugar_declaracion.id_for_label }}" class="form-label">{{ form.lugar_declaracion.label }}</label>
+            {{ form.lugar_declaracion }}
+            <button type="button" id="add_lugar_declaracion" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir lugar"><i class="fas fa-map-marked"></i></button>
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.lugar_doctrina.id_for_label }}" class="form-label">{{ form.lugar_doctrina.label }}</label>
+            {{ form.lugar_doctrina }}
+            <button type="button" id="add_lugar_doctrina" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir lugar"><i class="fas fa-map-marked"></i></button>
+        </div>
+
+        {% bootstrap_field form.tipo_entierro %}
+        <div class="mb-3">
+            <label for="{{ form.lugar_enterramiento.id_for_label }}" class="form-label">{{ form.lugar_enterramiento.label }}</label>
+            {{ form.lugar_enterramiento }}
+            <button type="button" id="add_lugar_enterramiento" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir lugar"><i class="fas fa-map-marked"></i></button>
+        </div>
+
+        <h3>Detalles del fallecimiento</h3>
+        {% bootstrap_field form.causa %}
+        {% bootstrap_field form.auxilio %}
+
+        <h3>Sobre el fallecido</h3>
+        <div class="mb-3">
+            <label for="{{ form.persona.id_for_label }}" class="form-label">{{ form.persona.label }}</label>
+            {{ form.persona }}
+            <button type="button" id="add_persona" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir persona"><i class="fas fa-user-plus"></i></button>
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.procedencia_difunto.id_for_label }}" class="form-label">{{ form.procedencia_difunto.label }}</label>
+            {{ form.procedencia_difunto }}
+            <button type="button" id="add_procedencia_difunto" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir lugar"><i class="fas fa-map-marked"></i></button>
+        </div>
+        {% bootstrap_field form.edad_fallecimiento %}
+        {% bootstrap_field form.estado_difunto %}
+        {% bootstrap_field form.legitimidad_difunto %}
+
+        <h3>Familiares del fallecido</h3>
+        <div class="mb-3">
+            <label for="{{ form.padre.id_for_label }}" class="form-label">{{ form.padre.label }}</label>
+            {{ form.padre }}
+            <button type="button" id="add_padre" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir persona"><i class="fas fa-user-plus"></i></button>
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.madre.id_for_label }}" class="form-label">{{ form.madre.label }}</label>
+            {{ form.madre }}
+            <button type="button" id="add_madre" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir persona"><i class="fas fa-user-plus"></i></button>
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.conyuge.id_for_label }}" class="form-label">{{ form.conyuge.label }}</label>
+            {{ form.conyuge }}
+            <button type="button" id="add_conyuge" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir persona"><i class="fas fa-user-plus"></i></button>
+        </div>
+        {% bootstrap_field form.sobreviviente %}
+        
+        <h4>Denunciantes</h4>
+        <div class="mb-3">
+            <label for="{{ form.denunciantes.id_for_label }}" class="form-label">{{ form.denunciantes.label }}</label>
+            {{ form.denunciantes }}
+            <button type="button" id="add_denunciantes" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir persona"><i class="fas fa-user-plus"></i></button>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary me-2">Guardar</button>
+            <a href="{% url 'entierro-browse' %}" class="btn btn-secondary" id="cancelButton">Cancelar</a>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+
+<div class="modal fade" id="addDocumentoModal" tabindex="-1" aria-labelledby="addDocumentoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Dynamic form content will be loaded here -->
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addPersonaModal" tabindex="-1" aria-labelledby="addPersonaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Dynamic form content will be loaded here -->
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addLugarModal" tabindex="-1" aria-labelledby="addLugarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Dynamic form content will be loaded here -->
+
+        </div>
+    </div>
+</div>
+
+{% include '_cancel_warning.html' %}
+
+{{ form.media }}
+
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Documentos
+        bindEventToButton('add_acta_entierro', '#addDocumentoModal .modal-content', "{% url 'documento-new' %}", "#newDocumentoForm", '/toolbox/Form/new/documento/', 'id_acta_entierro', '#addDocumentoModal');
+        // Personas
+        bindEventToButton('add_persona', '#addPersonaModal .modal-content', "{% url 'persona-new' %}", "#newPersonaForm", '/toolbox/Form/new/persona/', 'id_persona', '#addPersonaModal');
+        bindEventToButton('add_padre', '#addPersonaModal .modal-content', "{% url 'persona-new' %}", "#newPersonaForm", '/toolbox/Form/new/persona/', 'id_padre', '#addPersonaModal');
+        bindEventToButton('add_madre', '#addPersonaModal .modal-content', "{% url 'persona-new' %}", "#newPersonaForm", '/toolbox/Form/new/persona/', 'id_madre', '#addPersonaModal');
+        bindEventToButton('add_conyuge', '#addPersonaModal .modal-content', "{% url 'persona-new' %}", "#newPersonaForm", '/toolbox/Form/new/persona/', 'id_conyuge', '#addPersonaModal');
+        bindEventToButton('add_denunciantes', '#addPersonaModal .modal-content', "{% url 'persona-new' %}", "#newPersonaForm", '/toolbox/Form/new/persona/', 'id_denunciantes', '#addPersonaModal');
+        // Lugares
+        bindEventToButton('add_lugar_declaracion', '#addLugarModal .modal-content', "{% url 'lugar-new' %}", "#newLugarForm", '/toolbox/Form/new/lugar/', 'id_lugar_declaracion', '#addLugarModal');
+        bindEventToButton('add_lugar_doctrina', '#addLugarModal .modal-content', "{% url 'lugar-new' %}", "#newLugarForm", '/toolbox/Form/new/lugar/', 'id_lugar_doctrina', '#addLugarModal');
+        bindEventToButton('add_lugar_enterramiento', '#addLugarModal .modal-content', "{% url 'lugar-new' %}", "#newLugarForm", '/toolbox/Form/new/lugar/', 'id_lugar_enterramiento', '#addLugarModal');
+        bindEventToButton('add_procedencia_difunto', '#addLugarModal .modal-content', "{% url 'lugar-new' %}", "#newLugarForm", '/toolbox/Form/new/lugar/', 'id_procedencia_difunto', '#addLugarModal');
+    });
+    
+</script>
+
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
+
+{% endblock content %}

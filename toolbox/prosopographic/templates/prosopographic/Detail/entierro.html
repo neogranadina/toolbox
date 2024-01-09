@@ -1,0 +1,49 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h1>Entierro Detail</h1>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h2 class="card-title">Acta: {{ entierro.acta_entierro }}</h2>
+            <p class="card-text">Fallecido: {{ entierro.persona }}</p>
+            <!-- ForeignKey Links -->
+            {% if entierro.lugar %}
+                <p>Lugar de enterramiento: <a href="{% url 'lugar-detail' entierro.lugar.pk %}">{{ entierro.lugar }}</a></p>
+            {% endif %}
+            {% if entierro.fecha %}
+            <p>Fecha de defunción: {{ entierro.fecha }}</p>
+            {% endif %}
+            
+            {% if bautismo.padre %}
+            <p>Padre: <a href="{% url 'persona-detail' bautismo.padre.pk %}">{{ bautismo.padre }}</a></p>
+            {% endif %}
+            {% if bautismo.madre %}
+            <p>Madre: <a href="{% url 'persona-detail' bautismo.madre.pk %}">{{ bautismo.madre }}</a></p>
+            {% endif %}
+            {% if bautismo.padrino %}
+            <p>Padrino: <a href="{% url 'persona-detail' bautismo.padrino.pk %}">{{ bautismo.padrino }}</a></p>
+            {% endif %}
+            {% if bautismo.madrina %}
+            <p>Madrina: <a href="{% url 'persona-detail' bautismo.madrina.pk %}">{{ bautismo.madrina }}</a></p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="btn-group">
+        <a href="{% url 'entierro-browse' %}" class="btn btn-outline-secondary">Back</a>
+        {% if perms.prosopographic.add_entierro %}
+        <a href="{% url 'entierro-update' entierro.pk %}" class="btn btn-outline-primary">Edit</a>
+        {% endif %}
+        {% if perms.prosopographic.delete_entierro %}
+        <a href="{% url 'entierro-delete' entierro.pk %}" class="btn btn-outline-danger">Delete</a>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock content %}
