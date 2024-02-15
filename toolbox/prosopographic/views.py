@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.http import HttpResponse, JsonResponse
 from django.views import generic, View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.db.models import Q
 from dal import autocomplete
 from .models import Documento, Lugar, Persona, Matrimonio, Bautismo, Entierro, Relationship
 from .forms import PersonaForm, DocumentoForm, LugarForm, RelationshipForm
@@ -226,9 +227,61 @@ class EntierroCreateView(CreateView):
 
 ## Browse views
 
+class DocumentoBrowse(ListView):
+    model = Documento
+    template_name = 'prosopographic/Browse/documentos.html'
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        sort = self.request.GET.get('sort', 'identificador')
+        if sort not in ['identificador', 'titulo_documento']:
+            sort = 'identificador'
+        
+        search_query = self.request.GET.get('q', None)
+        if search_query:
+            queryset = queryset.filter(
+                Q(titulo_documento__icontains=search_query) | 
+                Q(identificador__icontains=search_query)
+            )
+        
+        return queryset.order_by(sort)
+
 class PersonaBrowse(ListView):
     model = Persona
     template_name = 'prosopographic/Browse/personas.html'
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        sort = self.request.GET.get('sort', 'apellidos')
+        if sort not in ['nombre_completo', 'apellidos']:
+            sort = 'nombre_completo'
+        
+        search_query = self.request.GET.get('q', None)
+        if search_query:
+            queryset = queryset.filter(
+                Q(nombre_completo__icontains=search_query)
+            )
+        
+        return queryset.order_by(sort)
+
+class LugarBrowse(ListView):
+    model = Lugar
+    template_name = 'prosopographic/Browse/lugares.html'
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        sort = self.request.GET.get('sort', 'nombre')
+        if sort not in ['nombre', 'tipo']:
+            sort = 'nombre'
+        
+        search_query = self.request.GET.get('q', None)
+        if search_query:
+            queryset = queryset.filter(
+                Q(nombre__icontains=search_query) | 
+                Q(tipo__icontains=search_query)
+            )
+        
+        return queryset.order_by(sort)
 
 class BautismoBrowse(ListView):
     model = Bautismo
@@ -243,6 +296,10 @@ class EntierroBrowse(ListView):
     template_name = 'prosopographic/Browse/entierros.html'
 
 ## DEtail views
+
+class DocumentoDetailView(DetailView):
+    model = Documento
+    template_name = 'prosopographic/Detail/documento.html'
 
 class PersonaDetailView(DetailView):
     model = Persona
@@ -260,8 +317,6 @@ class PersonaDetailView(DetailView):
         # Adding relationships to context
         context['relationships'] = relationships
         return context
-        
-
 
 class LugarDetailView(DetailView):
     model = Lugar

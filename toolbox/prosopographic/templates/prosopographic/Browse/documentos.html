@@ -1,0 +1,61 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container mt-4">
+    {% if perms.prosopographic.add_documento %}
+    <!-- Create New Object Button -->
+    <div class="text-end mb-3">
+        <a href="{% url 'documento-new' %}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Añadir un Documento</a>
+    </div>
+    {% endif %}
+
+    <!-- Search Form -->
+    <form id="searchForm" action="" method="get" class="input-group mb-3">
+        <input type="text" name="q" class="form-control" placeholder="Buscar...">
+        <button type="submit" class="btn btn-outline-secondary">Buscar</button>
+        <button type="button" id="clearSearch" class="btn btn-outline-secondary">Limpiar</button>
+    </form>
+    
+    <div class="d-flex mb-4">
+        <a href="?sort=identificador" class="me-2 btn btn-outline-info">Ordenar por Identificador</a>
+        <a href="?sort=titulo_documento" class="btn btn-outline-info">Ordenar por Título de documento</a>
+    </div>
+
+    <!-- List Layout for Objects -->
+    <ul class="list-group">
+        {% for object in object_list %}
+        <li class="list-group-item d-flex justify-content-between align-items-start clickable-row" data-href="{% url 'documento-detail' object.pk %}">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">{{ object.titulo_documento }}</div>
+                <p class'mb-1'>Identificador: {{ object.identificador }}</p>
+            </div>
+            {% comment %} <a href="{% url 'documento-detail' object.pk %}" class="btn btn-outline-secondary">Detalles</a> {% endcomment %}
+        </li>
+        {% empty %}
+        <li class="list-group-item">
+            <div class="text-center">
+                <p>No hay registros.</p>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        document.querySelectorAll('.clickable-row').forEach(row => {
+            row.addEventListener('click', function() {
+                window.location.href = this.dataset.href;
+            });
+        });
+    });
+
+    document.getElementById('clearSearch').addEventListener('click', function() {
+        document.querySelector('#searchForm input[name="q"]').value = '';
+        window.location.href = "{% url 'documentos-browse' %}";
+    });
+    </script>
+
+
+{% endblock content %}

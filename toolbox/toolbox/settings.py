@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-hj(gd649lak)wlen@f%ve&m39^cg0z4qyjkd+sb4ec(ino-4er
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['172.22.139.213', '127.0.0.1']
+ALLOWED_HOSTS = ['172.22.139.213', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -37,16 +37,21 @@ ALLOWED_HOSTS = ['172.22.139.213', '127.0.0.1']
 INSTALLED_APPS = [
     'dal',
     'dal_select2',
+    'polymorphic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'django_bootstrap5',
     'django_bootstrap_input_group',
+    'import_export',
     'cataloguers',
-    'prosopographic'
+    'prosopographic',
+    'toolboximport',
+    'esclavizados',
 ]
 
 MIDDLEWARE = [
@@ -202,3 +207,6 @@ LOGGING = {
         }
     }
 } """
+
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000

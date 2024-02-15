@@ -1,0 +1,115 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 shadow auth-forms-container">
+    <h2 class="mb-4">Agregar relación Persona a Persona</h2>
+
+    {% if perms.esclavizados.add_personaesclavizadalugarrel %}
+
+    <form method="post" class="form" id="newArchivoForm">
+        {% csrf_token %}
+        {% include '_form_errors.html' %}
+
+        <div class="mb-3">
+            {{ form.persona1.label_tag }}
+            {{ form.persona1 }}
+            {{ form.persona1.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.persona2.label_tag }}
+            {{ form.persona2 }}
+            {{ form.persona2.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.naturaleza_relacion.label_tag }}
+            {{ form.naturaleza_relacion }}
+            {{ form.naturaleza_relacion.errors }}
+        </div>
+        <div class="mb-3">
+            {{ form.descripcion_relacion.label_tag }}
+            {{ form.descripcion_relacion }}
+            {{ form.descripcion_relacion.errors }}
+        </div>
+
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary me-2">Guardar</button>
+            <a href="{% url 'home' %}" class="btn btn-secondary" id="cancelButton">Cancelar</a>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+
+<div class="modal fade" id="addDocumentoModal" tabindex="-1" aria-labelledby="addDocumentoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Dynamic form content will be loaded here -->
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addArchivoModal" tabindex="-1" aria-labelledby="addArchivoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Dynamic form content will be loaded here -->
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addPersonaModal" tabindex="-1" aria-labelledby="addPersonaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Dynamic form content will be loaded here -->
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addLugarModal" tabindex="-1" aria-labelledby="addLugarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Dynamic form content will be loaded here -->
+
+        </div>
+    </div>
+</div>
+
+
+{% include '_cancel_warning.html' %}
+
+
+{{ form.media }}
+
+
+<script type="text/javascript">
+    bindEventToButton('add_documento', '#addDocumentoModal .modal-content', "{% url 'documento-new' %}", "#newDocumentoForm", "{% url 'documento-new' %}", 'id_documento', '#addDocumentoModal');
+        bindEventToButton('add_ubicacion_archivo', '#addLugarModal .modal-content', "{% url 'lugar-new' %}", "#newLugarForm", 'esclavizados/Add/lugar.html', 'id_ubicacion_archivo', '#addLugarModal');
+    
+</script>
+
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
+
+    
+
+{% else %}
+    
+        {% if user.is_authenticated %}
+            {% include '_no_permission.html' %}
+        {% else %}
+        {% include '_no_registered.html' %}
+        {% endif %}
+        {% endif %}
+
+{% endblock content %}

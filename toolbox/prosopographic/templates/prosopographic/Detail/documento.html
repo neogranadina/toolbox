@@ -1,0 +1,26 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h1>Detalle del Documento</h1>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h2 class="card-title">{{ documento }}</h2>
+            <p class="card-text"> {{ documento.archivo }}</p>
+
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="btn-group">
+        <a href="{% url 'documentos-browse' %}" class="btn btn-outline-secondary">Regresar</a>
+    </div>
+
+</div>
+
+
+
+{% endblock content %}

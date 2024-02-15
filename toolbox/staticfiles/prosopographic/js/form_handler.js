@@ -45,10 +45,21 @@ function attachFormSubmitListener(formId, submitUrl, selectElementId, modalId) {
 
 function bindEventToButton(buttonId, modalContentId, formUrl, newFormId, submitUrl, selectElementId, modalId) {
     var button = document.getElementById(buttonId);
+    var appHost = window.location;
+    var subdomain = appHost.hostname.split(".")[0];
+    var isIPAddress = /^\d/.test(subdomain);
+    var protocolIsHttp = appHost.protocol === 'http:';
+    if (protocolIsHttp || isIPAddress){
+        var newSubmitUrl = submitUrl;
+    } else if (subdomain != "www") {
+        var submitUrlArray = submitUrl.split("/").slice(1);
+        var newSubmitUrl = '/' + submitUrlArray.join('/');
+    }
+    console.log(newSubmitUrl);
     if (button) {
         button.addEventListener('click', function() {
             $(modalContentId).load(formUrl, function() {
-                attachFormSubmitListener(newFormId, submitUrl, selectElementId, modalId);
+                attachFormSubmitListener(newFormId, newSubmitUrl, selectElementId, modalId);
                 $(modalId).modal('show');
             });
         });

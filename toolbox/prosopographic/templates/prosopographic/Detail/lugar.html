@@ -30,7 +30,8 @@
 
     <!-- Action Buttons -->
     <div class="btn-group">
-        {% comment %} <a href="{% url 'lugar-browse' %}" class="btn btn-outline-secondary">Back</a>
+        <a href="{% url 'lugares-browse' %}" class="btn btn-outline-secondary">Regresar</a>
+        {% comment %} 
         {% if perms.prosopographic.add_lugar %}
         <a href="{% url 'lugar-update' lugar.pk %}" class="btn btn-outline-primary">Edit</a>
         {% endif %}

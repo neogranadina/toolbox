@@ -27,12 +27,7 @@
         {% empty %}
         <div class="col">
             <div class="text-center">
-                <p>No objects yet.</p>
-                {% if perms.prosopographic.add_entierro %}
-                <div class="text-end mb-3">
-                    <a href="{% url 'entierro-new' %}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Añadir un registro de Bautismo</a>
-                </div>
-                {% endif %}
+                <p>No hay registros.</p>
             </div>
         </div>
         {% endfor %}

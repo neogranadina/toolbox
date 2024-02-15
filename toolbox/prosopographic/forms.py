@@ -1,9 +1,6 @@
-from typing import Any
 from django import forms
-from django_select2 import forms as s2forms
 from .models import Bautismo, Matrimonio, Entierro, Documento, Persona, Lugar, Relationship
 from datetime import datetime
-from django.forms import formset_factory
 from dal import autocomplete
 import re
 
@@ -198,9 +195,7 @@ class RelationshipForm(forms.ModelForm):
             relation.save()
         
         return relation
-        
-
-        
+    
 
 class LugarForm(forms.Form, forms.ModelForm):
     class Meta:
