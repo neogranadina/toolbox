@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container mt-4">
+    <!-- Hero Section -->
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Neogranadina Toolbox</h1>
+        <p class="lead">Plataforma para la catalogación y descripción colaborativa</p>
+        <hr class="my-4">
+        {% if user.is_authenticated %}
+        
+        <p>Escoge el aplicativo para ingresar</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'home_parroquia' %}" role="button">Registros Parroquiales</a>
+        <a class="btn btn-primary btn-lg" href="{% url 'home_esc' %}" role="button">Personas Esclavizadas</a>
+        {% else %}
+        <p>Debes <a href={% url 'login' %}>ingresar</a> para poder interactuar con el Toolbox</p>
+        {% endif %}
+    </div>
+    
+</div>
+
+{% endblock content %}

@@ -1,0 +1,19 @@
+/* Vertically align the text labels of button groups */
+.input-group > .btn-group label {
+  display: flex;
+  align-items: center;
+}
+
+/* Remove left radius from the first label of the button group
+(unless the button group is the first item in the input group) */
+.input-group > .btn-group:not(:first-child) label:first-of-type {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Remove right radius from the last label of the button group
+(unless the button group is the last item in the input group) */
+.input-group > .btn-group:not(:last-child) label:last-of-type {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}

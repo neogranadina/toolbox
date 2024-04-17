@@ -1,0 +1,344 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+{% load i18n %}
+{% load custom_filters %}
+{% csrf_token %}
+
+{% if perms.dbgestor.add_personaesclavizada %}
+
+<div class="d-flex flex-column flex-shrink-0 action-buttons">
+    <!-- Group 1: People, bg-info -->
+    <div class="bg-info sidebar-group">
+        <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+            <li class="nav-item">
+                <a href="{% url 'personaesclavizada-new' %}?documento_initial={{ documento.pk }}" class="nav-link py-3 border-bottom" title="Añadir persona esclavizada" data-bs-toggle="tooltip" data-bs-placement="right">
+                    <i class="fas fa-user-tag"></i><span class="visually-hidden">Esclavizada</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'personanoesclavizada-new' %}?documento_initial={{ documento.pk }}" class="nav-link py-3 border-bottom" title="Añadir persona no esclavizada" data-bs-toggle="tooltip" data-bs-placement="right">
+                    <i class="fas fa-user-friends"></i><span class="visually-hidden">No Esclavizada</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'persona_x_documentos' %}?documento_initial={{ documento.pk }}" class="nav-link py-3 border-bottom" title="Añadir persona ya existente al documento" data-bs-toggle="tooltip" data-bs-placement="right">
+                    <i class="fas fa-user"></i><i class="fas fa-plus-circle"></i><span class="visually-hidden">Existente</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Group 2: Institutions, bg-warning -->
+    <div class="bg-warning sidebar-group">
+        <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+            <li>
+                <a href="{% url 'institucion_new' %}?documento_initial={{ documento.pk }}" class="nav-link py-3 border-bottom" title="Incluir institución/corporación" data-bs-toggle="tooltip" data-bs-placement="right">
+                    <i class="fas fa-place-of-worship"></i><span class="visually-hidden">Institución</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'institucion_x_documentos' %}?documento_initial={{ documento.pk }}" class="nav-link py-3 border-bottom" title="Añadir institución ya existente al documento" data-bs-toggle="tooltip" data-bs-placement="right">
+                    <i class="fas fa-place-of-worship"></i><i class="fas fa-plus-circle"></i><span class="visually-hidden">Inst. Existente</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Group 3: Relationships and Places, bg-success -->
+    <div class="bg-success sidebar-group">
+        <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+            <li>
+                <button id="createRelation" class="btn py-3 w-100" title="Añadir relación entre dos o más personas" data-bs-toggle="tooltip" data-bs-placement="right">
+                    <i class="fas fa-people-arrows"></i><span class="visually-hidden">Relaciones</span>
+                </button>
+            </li>
+            <li>
+                <button id="createRelationLugar" class="btn py-3 w-100" title="Añadir lugar anterior o posterior a una o más personas" data-bs-toggle="tooltip" data-bs-placement="right">
+                    <i class="fas fa-shoe-prints"></i><span class="visually-hidden">Lugares</span>
+                </button>
+            </li>
+            
+            <li>
+                <button id="createRolEvento" class="btn py-3 w-100" title="Asignar Rol en el Evento a Persona No Esclavizada" data-bs-toggle="tooltip" data-bs-placement="right">
+                    <i class="far fa-handshake"></i><span class="visually-hidden">Rol Evento</span>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+{% endif %}
+
+<div class="container mt-4 document-detail-container">
+    <!-- Documento Details -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h1 class="card-title">{{ documento.titulo }}</h1>
+            <p><strong>Id:</strong> {{ documento.documento_idno }}</p>
+            <p><i class="fas fa-university"></i> {{ documento.archivo }}</p>
+            <p><i class="far fa-folder-open"></i> {{ documento.fondo }}, {{ documento.subfondo }},
+            {% if documento.sigla_documento %} {{ documento.sigla_documento }}, {% endif %} {{ documento.get_tipo_udc_display }} {{ documento.unidad_documental_compuesta }}, f. {{ documento.folio_inicial }}</p>
+
+            <p class="card-text">{{ documento.get_tipo_documento_display }}</p>
+            <p class="card-text"><i class="far fa-calendar-alt"></i> {{ documento.fecha_inicial }}</p>
+            <p class="card-text">Valor del evento en pesos: {{ documento.evento_valor_sp }} {{ documento.evento_forma_de_pago }}
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                {% if perms.dbgestor.add_documento %}
+                    <a href="{% url 'documento-update' documento.pk %}" class="btn btn-outline-primary">Editar</a>
+                {% endif %}
+                {% if perms.dbgraphic.delete_documento %}
+                    <a href="{% url 'documento-delete' documento.pk %}" class="btn btn-outline-danger">Borrar</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- End of Documento Details -->
+
+    <!-- Main Documento Card -->
+    <div class="card mb-3">
+        <div class="card-body">
+
+                <!-- Control buttons -->
+                <div id="warningAlert" class="alert alert-warning alert-dismissible fade show" role="alert" style="display: none;">
+                    Seleccione al menos dos personas para crear una relación.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                  <div id="warningAlertLugares" class="alert alert-warning alert-dismissible fade show" role="alert" style="display: none;">
+                    Seleccione una persona para asignar un lugar.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                  
+
+                <!-- End Control buttons -->
+                <!-- Select buttons -->
+                <div class="row" style="padding:15px;">
+                    <div class="selectall">
+                        <button id="selectAllBtn" class="btn btn-light toggle-button"><i class="far fa-check-square"></i> Seleccionar todas</button>
+                        <button id="deselectAllBtn" class="btn btn-light toggle-button hidden"><i class="far fa-square"></i> Deseleccionar todas</button>
+                    </div>
+                    <!-- Personas Esclavizadas Card -->
+                    <h3>Personas esclavizadas asociadas al documento</h3>
+                    {% for peresclavizada in peresclavizadas %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card border-dark">
+                            {% include 'dbgestor/Detail/persona_card.html' with person=peresclavizada detail_url="personaesclavizada_detail" %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- End of Personas Esclavizadas Card -->
+                    <!-- Personas no Esclavizadas Card -->
+                    <h3>Personas no esclavizadas asociadas al documento</h3>
+                    {% for pernoesclavizada in pernoesclavizadas %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card border-dark">
+                            {% include 'dbgestor/Detail/persona_card.html' with person=pernoesclavizada detail_url="personanoesclavizada_detail" %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- End of Personas no Esclavizadas Card -->
+
+                    <h3>Instituciones asociadas al documento</h3>
+                    {% for corporacion in corporacionrel %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card border-dark">
+                            {% include 'dbgestor/Detail/institucion_card.html' with corporacion=corporacion detail_url="institucion_detail" %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+        </div>
+    </div>
+    <!-- End of Main Documento Card -->
+    <!-- Historial -->
+    <div class="card mb-3">
+        <div class="card-header" data-bs-toggle="collapse" href="#changeHistory" role="button" aria-expanded="false" aria-controls="changeHistory">
+            <i class="fas fa-history"></i> Historial de cambios:
+        </div>
+        <div class="collapse" id="changeHistory">
+            <ul class="list-group list-group-flush">
+                {% for record in history_records %}
+                    <li class="list-group-item">
+                        <i class="far fa-user"></i> {{ record.history_user }} 
+                        <span class="text-muted" style="float:right;">
+                            <i class="far fa-calendar-alt"></i> {{ record.history_date|date:"d M Y H:i:s" }}
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <!-- End of historial -->
+    
+    
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <a href="{% url 'documento-browse' %}" class="btn btn-outline-secondary">Regresar</a>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteConfirmationModalLabel">{% trans 'Confirmar borrado' %}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% trans '¿Está seguro de querer borrar este elemento?'%}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Cancelar' %}</button>
+          <button type="button" class="btn btn-danger" id="deleteConfirmBtn">{% trans 'Borrar'%}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+
+    function showWarningAlert() {
+        var warningAlert = document.getElementById('warningAlert');
+        warningAlert.style.display = 'block';
+    }
+
+    function hideWarningAlert() {
+        var warningAlert = document.getElementById('warningAlert');
+        warningAlert.style.display = 'none';
+    }
+
+    function showWarningAlertLugar() {
+        var warningAlert = document.getElementById('warningAlertLugares');
+        warningAlert.style.display = 'block';
+    }
+
+    function hideWarningAlertLugar() {
+        var warningAlert = document.getElementById('warningAlertLugares');
+        warningAlert.style.display = 'block';
+    }
+
+    document.getElementById('createRelation').addEventListener('click', function() {
+        const selectedPersonas = document.querySelectorAll('input[name="selected_personas"]:checked');
+        let ids = [];
+        selectedPersonas.forEach((persona) => {
+            ids.push(persona.value);
+        });
+        if(ids.length >= 2) { 
+            window.location.href = `{% url 'persona_x_persona-new' %}?ids=${ids.join(',')}&documento_initial={{ documento.pk }}`;
+        } else if(ids.length == 1){
+            window.location.href = `{% url 'persona_x_persona-new' %}?ids=${ids.join(',')}&documento_initial={{ documento.pk }}`;
+        } else {
+            showWarningAlert();
+        }
+    });
+    
+
+    document.getElementById('createRelationLugar').addEventListener('click', function() {
+        const selectedPersonas = document.querySelectorAll('input[name="selected_personas"]:checked');
+        let ids = [];
+        selectedPersonas.forEach((persona) => {
+            ids.push(persona.value);
+        });
+        if(ids.length >= 1) { 
+            window.location.href = `{% url 'persona_x_lugar-new' %}?ids=${ids.join(',')}&documento_initial={{ documento.pk }}`;
+        } else {
+            showWarningAlertLugar();
+        }
+    });
+
+    
+
+    document.getElementById('createRolEvento').addEventListener('click', function() {
+        const selectedPersonas = document.querySelectorAll('input[name="selected_personas"]:checked');
+        let ids = [];
+        selectedPersonas.forEach((persona) => {
+            ids.push(persona.value);
+        });
+        if(ids.length >= 1) { 
+            window.location.href = `{% url 'rol_evento_new' %}?ids=${ids.join(',')}&documento_initial={{ documento.pk }}`;
+        } else {
+            showWarningAlertLugar();
+        }
+    });
+
+    function toggleButtons() {
+        var selectAllBtn = document.getElementById('selectAllBtn');
+        var deselectAllBtn = document.getElementById('deselectAllBtn');
+
+        selectAllBtn.classList.toggle('hidden');
+        deselectAllBtn.classList.toggle('hidden');
+
+    }
+
+    function selectAll() {
+        var checkboxes = document.getElementsByName('selected_personas');
+        checkboxes.forEach(function(checkbox){
+            checkbox.checked = true;
+        });
+        toggleButtons();
+    }
+
+    function deselectAll() {
+        var checkboxes = document.getElementsByName('selected_personas');
+        checkboxes.forEach(function(checkbox){
+            checkbox.checked = false;
+        });
+        toggleButtons();
+    }
+
+    document.getElementById('selectAllBtn').addEventListener('click', function() {
+        selectAll();
+    });
+
+    document.getElementById('deselectAllBtn').addEventListener('click', function() {
+        deselectAll();
+    });
+
+   
+    function confirmDelete(deleteURL) {
+        $('#deleteConfirmationModal').modal('show');
+    
+        document.getElementById('deleteConfirmBtn').onclick = function() {
+            const csrftoken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            console.log("csrf_token");
+            console.log(csrftoken);
+            $.ajax({
+                url: deleteURL,
+                type: 'POST',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                },
+                success: function(result) {
+                    $('#deleteConfirmationModal').modal('hide');
+                    location.reload(); 
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        };
+    }
+    
+</script>
+
+{% endblock content %}

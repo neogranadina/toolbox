@@ -1,0 +1,46 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container mt-4">
+    {% if perms.dbgestor.add_documento %}
+        <h2>Crea o selecciona un documento para agregar eventos</h2>
+
+        <form action="" method="get" class="input-group mb-3">
+            <input type="text" name="q" class="form-control" placeholder="Buscar en el título...">
+            <button type="submit" class="btn btn-outline-secondary">Buscar</button>
+        </form>
+
+        <!-- Create New Object Button -->
+        <div class="mb-3">
+            <a href="{% url 'documento-new' %}" class="btn btn-info"><i class="fas fa-file-medical" aria-hidden="true"></i> Crear un documento</a>
+        </div>
+    {% endif %}
+
+    <!-- Sorting Links -->
+    <div class="d-flex mb-4">
+        <a href="?sort=created_at" class="me-2 btn btn-outline-info">Ordenar por Fecha de creación</a>
+        <a href="?sort=title" class="btn btn-outline-info">Ordenar por Título</a>
+    </div>
+
+    <!-- Row Layout for Objects -->
+    <div class="list-group">
+        {% for object in object_list %}
+            <a href="{% url 'documento-detail' object.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1">{{ object.titulo }}</h5>
+                    <p class="mb-1">{{ object.documento_idno }}</p>
+                    <small>{{ object.archivo }}</small>
+                    <small>{{ object.fondo }}</small>
+                </div>
+                <span class="badge bg-secondary">Seleccionar documento</span>
+            </a>
+        {% empty %}
+            <div class="text-center">
+                <p>No hay documentos aún.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,154 @@
+{% extends 'main.html' %}
+{% load django_bootstrap5 django_bootstrap_input_group static %}
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 shadow auth-forms-container">
+    <h2 class="mb-4">Bautismo</h2>
+
+    {% if perms.prosopographic.add_bautismo %}
+    
+    <form method="post" class="form" id="bautismoForm">
+        {% csrf_token %}
+
+        {% include '_form_errors.html' %}
+
+        <h3>Documento de bautismo:</h3>
+        
+        <div class="mb-3">
+            <label for="{{ form.acta_bautismo.id_for_label }}" class="form-label">{{ form.acta_bautismo.label }}</label>
+            {{ form.acta_bautismo }}
+            <button type="button" id="add_acta_bautismo" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir documento"><i class="fas fa-file-medical"></i></button>
+        </div>
+
+        <h3>Datos del bautismo:</h3>
+        
+        <div class="mb-3">
+            <label for="{{ form.lugar_bautismo.id_for_label }}" class="form-label">{{ form.lugar_bautismo.label }}</label>
+            {{ form.lugar_bautismo }}
+            <button type="button" id="add_lugar_bautismo" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir lugar"><i class="fas fa-map-marked"></i></button>
+        </div>
+        
+        {% bootstrap_field form.fecha_bautismo %}
+
+        <h4>Sobre la persona bautizada</h4>
+        
+        <div class="mb-3">
+            <label for="{{ form.bautizado.id_for_label }}" class="form-label">{{ form.bautizado.label }}</label>
+            {{ form.bautizado }}
+            <button type="button" id="add_bautizado" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir persona"><i class="fas fa-user-plus"></i></button>
+        </div>
+        
+        <div class="mb-3">
+            <label for="{{ form.lugar_bautizado.id_for_label }}" class="form-label">{{ form.lugar_bautizado.label }}</label>
+            {{ form.lugar_bautizado }}
+            <button type="button" id="add_lugar_bautizado" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir lugar"><i class="fas fa-map-marked"></i></button>
+        </div>
+
+        {% bootstrap_field form.fecha_nacimiento %}
+        {% bootstrap_field form.condicion_bautizado %}
+
+        <h4>Padres</h4>
+        <div class="mb-3">
+            <label for="{{ form.padre.id_for_label }}" class="form-label">{{ form.padre.label }}</label>
+            {{ form.padre }}
+            <button type="button" id="add_padre" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir persona"><i class="fas fa-user-plus"></i></button>
+        </div>
+
+        <div class="mb-3">
+            <label for="{{ form.madre.id_for_label }}" class="form-label">{{ form.madre.label }}</label>
+            {{ form.madre }}
+            <button type="button" id="add_madre" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir persona"><i class="fas fa-user-plus"></i></button>
+        </div>
+
+        <h4>Padrinos</h4>
+        <div class="mb-3">
+            <label for="{{ form.padrino.id_for_label }}" class="form-label">{{ form.padrino.label }}</label>
+            {{ form.padrino }}
+            <button type="button" id="add_padrino" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir persona"><i class="fas fa-user-plus"></i></button>
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.madrina.id_for_label }}" class="form-label">{{ form.madrina.label }}</label>
+            {{ form.madrina }}
+            <button type="button" id="add_madrina" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir persona"><i class="fas fa-user-plus"></i></button>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary me-2">Guardar</button>
+            <a href="{% url 'bautismo-browse' %}" class="btn btn-secondary" id="cancelButton">Cancelar</a>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+
+<div class="modal fade" id="addDocumentoModal" tabindex="-1" aria-labelledby="addDocumentoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Dynamic form content will be loaded here -->
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addPersonaModal" tabindex="-1" aria-labelledby="addPersonaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Dynamic form content will be loaded here -->
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addLugarModal" tabindex="-1" aria-labelledby="addLugarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Dynamic form content will be loaded here -->
+
+        </div>
+    </div>
+</div>
+
+
+{% include '_cancel_warning.html' %}
+
+
+{{ form.media }}
+
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        bindEventToButton('add_acta_bautismo', '#addDocumentoModal .modal-content', "{% url 'documento-new' %}", "#newDocumentoForm", '/toolbox/Form/new/documento/', 'id_acta_bautismo', '#addDocumentoModal');
+        bindEventToButton('add_bautizado', '#addPersonaModal .modal-content', "{% url 'persona-new' %}", "#newPersonaForm", '/toolbox/Form/new/persona/', 'id_bautizado', '#addPersonaModal');
+        bindEventToButton('add_padre', '#addPersonaModal .modal-content', "{% url 'persona-new' %}", "#newPersonaForm", '/toolbox/Form/new/persona/', 'id_padre', '#addPersonaModal');
+        bindEventToButton('add_madre', '#addPersonaModal .modal-content', "{% url 'persona-new' %}", "#newPersonaForm", '/toolbox/Form/new/persona/', 'id_madre', '#addPersonaModal');
+        bindEventToButton('add_padrino', '#addPersonaModal .modal-content', "{% url 'persona-new' %}", "#newPersonaForm", '/toolbox/Form/new/persona/', 'id_padrino', '#addPersonaModal');
+        bindEventToButton('add_madrina', '#addPersonaModal .modal-content', "{% url 'persona-new' %}", "#newPersonaForm", '/toolbox/Form/new/persona/', 'id_madrina', '#addPersonaModal');
+        bindEventToButton('add_lugar_bautismo', '#addLugarModal .modal-content', "{% url 'lugar-new' %}", "#newLugarForm", "{% url 'lugar-new' %}", 'id_lugar_bautismo', '#addLugarModal');
+        bindEventToButton('add_lugar_bautizado', '#addLugarModal .modal-content', "{% url 'lugar-new' %}", "#newLugarForm", '/toolbox/Form/new/lugar/', 'id_lugar_bautizado', '#addLugarModal');
+    });
+    
+</script>
+
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
+
+
+    
+
+{% else %}
+    
+        {% if user.is_authenticated %}
+            {% include '_no_permission.html' %}
+        {% else %}
+        {% include '_no_registered.html' %}
+        {% endif %}
+        {% endif %}
+
+{% endblock content %}

@@ -1,0 +1,68 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1 0 auto;
+}
+
+.select2-autocomplete .select2-container {
+    width: 100% !important; /* Adjust the width as needed */
+}
+
+#userDropdown i {
+    font-size: x-large;
+    color: black;
+}
+
+.group-name {
+    font-size: small;
+}
+
+.auth-forms-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        background-color: rgba(121, 76, 40, 0.02);
+}
+
+.toggle-button {
+    display: inline-block;
+    /* Add any additional styling as needed */
+}
+
+.hidden {
+    display: none;
+}
+
+footer {
+    flex-shrink: 0;
+}
+
+.action-buttons {
+    width: 60px; 
+    height: calc(100vh - 60px); 
+    position: fixed; 
+    top: 60px; 
+    left: 0;
+    padding-left: 10px;
+}
+
+.document-detail-container {
+    padding-left: 70px;
+}
+
+.sidebar-group {
+    margin-top: 5px !important;
+}
+
+.sidebar-group a {
+    color: black;
+}
