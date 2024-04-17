@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-hj(gd649lak)wlen@f%ve&m39^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['172.22.139.213', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['172.22.139.213', '127.0.0.1', 'localhost', 'toolbox.abcng.org']
 
 
 # Application definition

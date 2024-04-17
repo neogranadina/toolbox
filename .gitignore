@@ -1,0 +1,17 @@
+__pycache__
+env*
+.env
+*copy*
+*.xlsx
+toolbox/settings-copy.py
+backup.json
+authenticate.py
+staticfiles/*
+!staticfiles/prosopographic/
+preparedata
+hello
+prosopographic/migrations/0*.py
+prosopographic/cataloguers/0*.py
+esclavizados/migrations/0*.py
+*.csv
+esclavizados/
