@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 import os
 
 from dotenv import load_dotenv
@@ -24,7 +25,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-hj(gd649lak)wlen@f%ve&m39^cg0z4qyjkd+sb4ec(ino-4er'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-hj(gd649lak)wlen@f%ve&m39^cg0z4qyjkd+sb4ec(ino-4er')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -55,14 +56,17 @@ INSTALLED_APPS = [
     'dashboard',
 ]
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'toolbox.urls'
@@ -97,7 +101,7 @@ DATABASES = {
         "NAME": os.getenv('DATABASE_NAME'),
         "USER": os.getenv('DATABASE_USER'),
         "PASSWORD": os.getenv('DATABASE_PASSWORD'),
-        "HOST": 'localhost',
+        "HOST": os.getenv('DATABASE_HOST'),
         "PORT": '3306',
     }
 }
@@ -126,11 +130,20 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-mx'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
+
+LANGUAGES = [
+    ('en', _('English')),
+    ('es', _('Spanish')),
+]
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
 
 USE_TZ = True
 
@@ -144,6 +157,7 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -198,7 +212,7 @@ LOGGING = {
     },
 }
 
-""" CACHES = {
+CACHES = {
     # … default cache config and others
     "default": {
       "BACKEND": "django_redis.cache.RedisCache",
@@ -207,7 +221,18 @@ LOGGING = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
-} """
+}
 
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' 
+EMAIL_HOST = 'smtp.sendgrid.net' 
+EMAIL_PORT = 587 
+EMAIL_USE_TLS = True 
+EMAIL_HOST_USER = 'apikey'  
+EMAIL_HOST_PASSWORD = os.getenv('SMTP_API_KEY')
+DEFAULT_FROM_EMAIL = os.getenv('FROM_EMAIL', default='noreply@abcng.org')
+LOGIN_REDIRECT_URL = 'success'
+DEFAULT_HTTP_PROTOCOL = 'https'
+DEFAULT_DOMAIN = 'msdb.abcng.org'
