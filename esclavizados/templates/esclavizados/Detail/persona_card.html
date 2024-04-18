@@ -7,7 +7,7 @@
         <input type="checkbox" class="form-check-input" name="selected_personas" value="{{ person.pk }}">
         {{ person.nombre_normalizado }} (ID: {{ person.persona_idno }})
     </div>
-    {% if perms.dbgestor.add_personaesclavizada %}
+    {% if perms.esclavizados.add_personaesclavizada %}
     <a href='{% url detail_url person.pk %}' class="btn btn-outline-dark"><i class="far fa-eye"></i></a>
     {% endif %}
 </div>

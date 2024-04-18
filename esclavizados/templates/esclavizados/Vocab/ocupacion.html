@@ -7,7 +7,7 @@
         <div class="col-md-6 shadow auth-forms-container">
     <h2 class="mb-4">Ocupacion</h2>
 
-    {% if perms.dbgestor.add_ocupacion %}
+    {% if perms.esclavizados.add_ocupacion %}
 
     <form method="post" class="form" id="newOcupacionForm">
         {% csrf_token %}

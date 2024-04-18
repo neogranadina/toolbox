@@ -13,7 +13,7 @@
 
             <p class="card-text"> {{ archivo.ubicacion_archivo }} <a href="https://www.google.com/maps/place/{{ archivo.ubicacion_archivo }},+Mexico", target="_blank"><i class="fas fa-map-marker-alt"></i> </a> </p>
 
-            {% if perms.dbgestor.add_documento %} <a href='{% url 'documento-new' %}?archivo_initial={{ archivo.pk }}' class="btn btn-primary me-2"><i class="far fa-plus-square"></i> Agregar un nuevo documento a {{ archivo.nombre_abreviado }}</a>{% endif %}
+            {% if perms.esclavizados.add_documento %} <a href='{% url 'documento-new' %}?archivo_initial={{ archivo.pk }}' class="btn btn-primary me-2"><i class="far fa-plus-square"></i> Agregar un nuevo documento a {{ archivo.nombre_abreviado }}</a>{% endif %}
 
             <div class="row" style="padding:15px;">
                 {% for documento in documentos %}
@@ -21,7 +21,7 @@
                     <div class="card">
                         <div class="card-header">
                             {{ documento.titulo }} (ID: {{ documento.documento_idno }})
-                            {% if perms.dbgestor.add_documento %} <a href='{% url 'documento-detail' documento.pk %}' class="btn btn-outline-dark me-2"><i class="far fa-eye"></i></a>{% endif %}
+                            {% if perms.esclavizados.add_documento %} <a href='{% url 'documento-detail' documento.pk %}' class="btn btn-outline-dark me-2"><i class="far fa-eye"></i></a>{% endif %}
                         </div>
                         <div class="card-body">
                             <p><i class="far fa-folder-open"></i> {{ documento.fondo }}, {{ documento.subfondo }},
@@ -39,7 +39,7 @@
     <!-- Action Buttons -->
     <div class="btn-group">
         <a href="{% url 'archivo-browse' %}" class="btn btn-outline-secondary">Regresar</a>
-        {% if perms.dbgestor.add_archivo %}
+        {% if perms.esclavizados.add_archivo %}
         <a href="{% url 'archivo-update' archivo.pk %}" class="btn btn-outline-primary">Editar</a>
         {% endif %}
         {% if perms.dbgraphic.delete_archivo %}

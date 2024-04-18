@@ -8,7 +8,7 @@
         <div class="col-md-6 shadow auth-forms-container">
     <h2 class="mb-4">{% trans "Crear documento" %}</h2>
 
-    {% if perms.dbgestor.add_documento %}
+    {% if perms.esclavizados.add_documento %}
 
     <form method="post" class="form" id="newDocumentoForm">
         {% csrf_token %}

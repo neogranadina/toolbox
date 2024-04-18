@@ -5,7 +5,7 @@
 {% load custom_filters %}
 {% csrf_token %}
 
-{% if perms.dbgestor.add_personaesclavizada %}
+{% if perms.esclavizados.add_personaesclavizada %}
 
 <div class="d-flex flex-column flex-shrink-0 action-buttons">
     <!-- Group 1: People, bg-info -->
@@ -89,7 +89,7 @@
         <!-- Action Buttons -->
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
-                {% if perms.dbgestor.add_documento %}
+                {% if perms.esclavizados.add_documento %}
                     <a href="{% url 'documento-update' documento.pk %}" class="btn btn-outline-primary">Editar</a>
                 {% endif %}
                 {% if perms.dbgraphic.delete_documento %}

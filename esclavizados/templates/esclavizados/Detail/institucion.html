@@ -28,7 +28,7 @@
             <div class="d-flex justify-content-between align-items-center mt-4">
                 <a href="{% url 'instituciones_browse' %}" class="btn btn-outline-secondary">Regresar</a>
                 <div>
-                    {% if perms.dbgestor.add_corporacion %}
+                    {% if perms.esclavizados.add_corporacion %}
                         <a href="{% url 'institucion_update' corporacion.pk %}" class="btn btn-outline-primary me-2">Editar</a>
                     {% endif %}
                     {% if perms.dbgraphic.delete_corporacion %}

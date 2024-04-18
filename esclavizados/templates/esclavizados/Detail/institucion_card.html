@@ -7,7 +7,7 @@
         <input type="checkbox" class="form-check-input" name="selected_corporaciones" value="{{ corporacion.pk }}">
         {{ corporacion.nombre_institucion }} (ID: {{ corporacion.corporacion_idno }})
     </div>
-    {% if perms.dbgestor.add_corporacion %}
+    {% if perms.esclavizados.add_corporacion %}
     <a href='{% url detail_url corporacion.pk %}' class="btn btn-outline-dark"><i class="far fa-eye"></i></a>
     {% endif %}
 </div>
