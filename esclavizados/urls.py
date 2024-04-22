@@ -14,7 +14,8 @@ from .views import (
     PersonaNoEsclavizadaDeleteView, PersonaNoEsclavizadaDetailView, PersonaNoEsclavizadaUpdateView,
     PersonaPersonaRelCreateView, PersonaRelacionesUpdateView, RolesCreateView, RolEventoAutocomplete,
     SituacionLugarAutocomplete, SituacionLugarCreateView, TipoDocumentalAutocomplete, TipoLugarAutocomplete,
-    TotalBrowseView,PersonaDeleteView,ConfirmRemovePersonaDocumento, TiposInstitucionAutocomplete
+    TotalBrowseView,PersonaDeleteView,ConfirmRemovePersonaDocumento, TiposInstitucionAutocomplete,
+    RelationshipCreateView
 )
 
 
@@ -31,6 +32,7 @@ urlpatterns = [
     # relations
     path('Add/peresclavizada_x_lugar/', PersonaLugarRelCreateView.as_view(), name='persona_x_lugar-new'),
     path('Add/persona_x_persona/', PersonaPersonaRelCreateView.as_view(), name='persona_x_persona-new'),
+    path('Add/parentesco/', RelationshipCreateView.as_view(), name='parentesco_new'),
     path('Add/rol_evento/', PersonaRolEventoCreateView.as_view(), name='rol_evento_new'),
     # vocabs create
     path('Add/voc/calidad/', CalidadesCreateView.as_view(), name='calidad-new'),

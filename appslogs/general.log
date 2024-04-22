@@ -673,3 +673,7 @@ Traceback (most recent call last):
     raise self.error(token, msg)
 django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 46: 'if'. Looking for one of: elif, else, endif.
 WARNING Not Found: /toolbox/prosopographic/
+WARNING Session data corrupted
+WARNING Session data corrupted
+WARNING Session data corrupted
+WARNING Session data corrupted

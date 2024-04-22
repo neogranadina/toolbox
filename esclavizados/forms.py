@@ -8,7 +8,7 @@ import re
 from .models import (Lugar, PersonaEsclavizada, 
                      PersonaNoEsclavizada, Persona, Documento, Archivo,
                      Calidades, Hispanizaciones, Etonimos, Actividades,
-                     PersonaLugarRel, PersonaRelaciones, PersonaRolEvento, TipoLugar,
+                     PersonaLugarRel, PersonaRelaciones, PersonaRolEvento, Relationship, TipoLugar,
                      SituacionLugar, TipoDocumental, RolEvento,
                      TiposInstitucion, Corporacion)
 
@@ -19,6 +19,23 @@ import logging
 
 logger = logging.getLogger("dbgestor")
 
+
+RELATIONSHIP_TYPES = (
+        ('padre', 'es padre de'),
+        ('madre', 'es madre de'),
+        ('hijo', 'es hijo de'),
+        ('legitimo', 'es hijo legítimo de'),
+        ('natural', 'es hijo natural de'),
+        ('hija', 'es hija de'),
+        ('padrino', 'es padrino de'),
+        ('madrina', 'es madrina de'),
+        ('esposo', 'es esposo de'),
+        ('esposa', 'es esposa de'),
+        ('casado', 'está casado con'),
+        ('hermano', 'es hermano de'),
+        ('hermana', 'es hermana de'),
+        ('ahijado', 'es ahijado de')
+    )
 
 class CustomValidators:
     def validate_date(self, date_text):
@@ -462,9 +479,14 @@ class PersonaRelacionesForm(forms.ModelForm):
         model = PersonaRelaciones
         fields = '__all__'
         widgets = {
-            'naturaleza_relacion': forms.Select(),
             'descripcion_relacion': forms.Textarea(attrs={'rows': 2}),
         }
+    
+    RELACIONES = (
+        ('fam', 'Familiar'), 
+        ('aso', 'Asociativa'), 
+        ('tmp', 'Temporal')
+    )
     
     documento = forms.ModelChoiceField(
         queryset=Documento.objects.all(),
@@ -480,6 +502,40 @@ class PersonaRelacionesForm(forms.ModelForm):
         label='Personas relacionadas'
     )
     
+    naturaleza_relacion = forms.Select(choices=RELACIONES)
+
+
+class RelationshipForm(forms.ModelForm):
+    class Meta:
+        model = Relationship
+        fields = '__all__'
+        
+    left_person = forms.ModelChoiceField(label="Persona 1",
+        queryset=Persona.objects.all(), 
+        required=True,
+        widget=autocomplete.ModelSelect2(url='personas-autocomplete')
+    )
+    
+    relationship_type = forms.ChoiceField(required=True, label="Tipo de relación", choices=RELATIONSHIP_TYPES)
+    
+    right_person = forms.ModelChoiceField(label="Persona 2",
+        queryset=Persona.objects.all(), 
+        required=True,
+        widget=autocomplete.ModelSelect2(url='personas-autocomplete')
+    )
+    
+    def save(self, commit=True):
+        
+        relation, create  = Relationship.objects.update_or_create(
+            left_person = self.cleaned_data['left_person'],
+            right_person = self.cleaned_data['right_person'],
+            defaults={'relationship_type': self.cleaned_data['relationship_type']}
+        )
+        
+        if commit:
+            relation.save()
+        
+        return relation
 
 class PersonaRolEventoForm(forms.ModelForm):
     class Meta:

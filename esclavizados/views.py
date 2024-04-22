@@ -11,13 +11,13 @@ from dal import autocomplete
 
 from .models import (Corporacion, Lugar, PersonaEsclavizada, PersonaNoEsclavizada, Documento, 
                      Archivo, Calidades, Hispanizaciones, Etonimos, Actividades,
-                     PersonaLugarRel, Persona, PersonaRelaciones, PersonaRolEvento, SituacionLugar,
+                     PersonaLugarRel, Persona, PersonaRelaciones, PersonaRolEvento, Relationship, SituacionLugar,
                      TipoDocumental, RolEvento, TipoLugar, TiposInstitucion)
 
 from .forms import (CorporacionForm, LugarForm, DocumentoForm, ArchivoForm, PersonaEsclavizadaForm,
                     PersonaNoEsclavizadaForm,
                     CalidadesForm, HispanizacionesForm, EtnonimosForm, OcupacionesForm,
-                    PersonaLugarRelForm, PersonaRelacionesForm, PersonaRolEventoForm, RolesForm, SituacionLugarForm,
+                    PersonaLugarRelForm, PersonaRelacionesForm, PersonaRolEventoForm, RelationshipForm, RolesForm, SituacionLugarForm,
                     PersonaDocumentoForm, CorporacionDocumentoForm)
 
 # Custom views
@@ -555,6 +555,24 @@ class PersonaPersonaRelCreateView(CreateView):
     def form_valid(self, form):
         response = super().form_valid(form) 
         return response
+
+class RelationshipCreateView(CreateView):
+    model = Relationship
+    form_class = RelationshipForm
+    template_name = 'esclavizados/Add/relacion.html'
+    success_url = reverse_lazy('documento-browse')
+    
+    def get_template_names(self):
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return ['esclavizados/Add/relacion.html']
+        return ['esclavizados/Add/relacion.html']
+    
+    def get_success_url(self):
+        documento_initial = self.request.GET.get('documento_initial')
+        if documento_initial:
+            return reverse('documento-detail', kwargs={'pk': documento_initial})
+        else:
+            return reverse('documento-browse')
 
 class PersonaRolEventoCreateView(CreateView):
     model = PersonaRolEvento
@@ -1244,7 +1262,7 @@ class PersonaRelacionesUpdateView(UpdateView):
 
 class ArchivoDeleteView(DeleteView):
     model = Archivo
-    template_name = 'esclavizados/Base/archivo_confirm_delete.html'
+    template_name = 'esclavizados/Base/confirm_delete.html'
     success_url = reverse_lazy('archivo-browse')
 
     def get_context_data(self, **kwargs):
@@ -1255,7 +1273,7 @@ class ArchivoDeleteView(DeleteView):
     
 class DocumentoDeleteView(DeleteView):
     model = Documento
-    template_name = 'esclavizados/Base/documento_confirm_delete.html'
+    template_name = 'esclavizados/Base/confirm_delete.html'
     success_url = reverse_lazy('documento-browse')
     
     def get_context_data(self, **kwargs):
@@ -1278,7 +1296,7 @@ class PersonaDeleteView(DeleteView):
 
 class PersonaEsclavizadaDeleteView(DeleteView):
     model = PersonaEsclavizada
-    template_name = 'esclavizados/Base/personaesclavizada_confirm_delete.html'
+    template_name = 'esclavizados/Base/confirm_delete.html'
     success_url = reverse_lazy('personasesclavizadas-browse')
     
     def get_context_data(self, **kwargs):
@@ -1289,7 +1307,7 @@ class PersonaEsclavizadaDeleteView(DeleteView):
     
 class PersonaNoEsclavizadaDeleteView(DeleteView):
     model = PersonaNoEsclavizada
-    template_name = 'esclavizados/Base/personanoesclavizada_confirm_delete.html'
+    template_name = 'esclavizados/Base/confirm_delete.html'
     success_url = reverse_lazy('personasnoesclavizadas-browse')
     
     def get_context_data(self, **kwargs):
@@ -1313,7 +1331,7 @@ class CorporacionDeleteView(DeleteView):
 # Delete Vocabs
 class PersonaLugarRelDeleteView(DeleteView):
     model = PersonaLugarRel
-    template_name = 'esclavizados/Base/personalugar_rel_confirm_delete.html'
+    template_name = 'esclavizados/Base/confirm_delete.html'
     success_url = reverse_lazy('documentos-browse')
     
     def get_context_data(self, **kwargs):

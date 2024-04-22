@@ -52,6 +52,11 @@
         </div>
 
         <div class="mb-3">
+            <label for="{{ form.descripcion.id_for_label }}" class="form-label">{{ form.descripcion.label }}</label>
+            {{ form.descripcion }}
+        </div>
+
+        <div class="mb-3">
             <div class="input-group-text">
                 <input class="form-check-input mt-0" type="checkbox" name="deteriorado" id="deteriorado" aria-label="{% trans 'El documento está deteriorado' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="{% trans 'Seleccionar si el documento está deteriorado y no es posible identificar su folio.' %}">
                 <label for="{{ form.deteriorado.id_for_label }}" class="ms-2">{% trans 'Documento deteriorado'%}</label>

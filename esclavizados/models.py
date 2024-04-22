@@ -151,7 +151,7 @@ class Archivo(models.Model):
         if not self.pk:
             super(Archivo, self).save(*args, **kwargs)
             
-        self.archivo_idno = f"mx-sv-doc-{str(self.archivo_id).zfill(6)}"
+        self.archivo_idno = f"co-esc-doc-{str(self.archivo_id).zfill(6)}"
 
         super(Archivo, self).save(*args, **kwargs)
     
@@ -206,7 +206,7 @@ class Documento(models.Model):
         ordering = ['-updated_at']
         
     def save(self, *args, **kwargs):
-        self.documento_idno = f"mx-sv-doc-{str(self.documento_id).zfill(6)}"
+        self.documento_idno = f"co-esc-doc-{str(self.documento_id).zfill(6)}"
 
         super(Documento, self).save(*args, **kwargs)
 
@@ -358,7 +358,7 @@ class Persona(PolymorphicModel):
         if not self.pk:
             super(Persona, self).save(*args, **kwargs)
             
-        self.persona_idno = f"mx-sv-per-{str(self.persona_id).zfill(6)}"
+        self.persona_idno = f"co-esc-per-{str(self.persona_id).zfill(6)}"
 
         super(Persona, self).save(*args, **kwargs)
 
@@ -426,12 +426,6 @@ class PersonaLugarRel(models.Model):
 
 class PersonaRelaciones(models.Model):
     
-    RELACIONES = (
-        ('fam', 'Familiar'), 
-        ('aso', 'Asociativa'), 
-        ('tmp', 'Temporal')
-    )
-    
     persona_relacion_id = models.AutoField(primary_key=True)
     
     documento = models.ForeignKey(Documento, on_delete=models.CASCADE, related_name='p_x_p_documento', default=1)
@@ -440,7 +434,8 @@ class PersonaRelaciones(models.Model):
         Persona, 
         related_name='relaciones'
     )
-    naturaleza_relacion = models.CharField(max_length=50, choices=RELACIONES)
+    
+    naturaleza_relacion = models.CharField(max_length=50, blank=True)
     descripcion_relacion = models.CharField(max_length=250, null=True, blank=True)
     fecha_inicial_relacion = models.DateField(null=True, blank=True)
     fecha_inicial_relacion_factual = models.BooleanField(null=True, blank=True)
@@ -454,6 +449,15 @@ class PersonaRelaciones(models.Model):
     def __str__(self) -> str:
         return ', '.join([persona.nombre_normalizado for persona in self.personas.all()]) + f" - {self.get_naturaleza_relacion_display()}"
 
+
+class Relationship(models.Model):
+    
+    left_person = models.ForeignKey(Persona, on_delete=models.CASCADE, related_name='relacionado_con')
+    relationship_type = models.CharField(max_length=50)
+    right_person = models.ForeignKey(Persona, on_delete=models.CASCADE, related_name='con_relacionado')
+    
+    def __str__(self):
+        return f"{self.left_person} {self.relationship_type} {self.right_person}"
 
 class PersonaRolEvento(models.Model):
     
@@ -509,7 +513,7 @@ class Corporacion(PolymorphicModel):
         if not self.pk:
             super(Corporacion, self).save(*args, **kwargs)
             
-        self.corporacion_idno = f"mx-sv-cor-{str(self.corporacion_id).zfill(6)}"
+        self.corporacion_idno = f"co-esc-cor-{str(self.corporacion_id).zfill(6)}"
 
         super(Corporacion, self).save(*args, **kwargs)
     

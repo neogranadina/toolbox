@@ -4,7 +4,7 @@ from import_export.admin import ImportExportModelAdmin
 
 # resources
 
-from .resources import SituacionLugarResource, TipoInstitucionResource
+from .resources import SituacionLugarResource, TipoInstitucionResource, DocumentoResource
 
 # Register your models here.
 from .models import Lugar, PersonaRolEvento
@@ -12,8 +12,10 @@ from .models import Archivo, Documento
 from .models import Calidades, Actividades, Hispanizaciones, Etonimos
 from .models import SituacionLugar, TipoDocumental, TipoLugar, TiposInstitucion
 from .models import PersonaEsclavizada, PersonaNoEsclavizada, Corporacion
-from .models import PersonaRelaciones, PersonaLugarRel, RolEvento
-    
+from .models import PersonaRelaciones, PersonaLugarRel, RolEvento, Relationship
+
+class DocumentoResourceAdmin(ImportExportModelAdmin):
+    resource_class = DocumentoResource
 
 class SituacionLugarAdmin(ImportExportModelAdmin):
     resource_class = SituacionLugarResource
@@ -23,7 +25,7 @@ class TipoInstitucionAdmin(ImportExportModelAdmin):
 
 admin.site.register(Archivo, ImportExportModelAdmin)
 admin.site.register(Calidades, ImportExportModelAdmin)
-admin.site.register(Documento, ImportExportModelAdmin)
+admin.site.register(Documento, DocumentoResourceAdmin)
 admin.site.register(Actividades, ImportExportModelAdmin)
 admin.site.register(Etonimos, ImportExportModelAdmin)
 admin.site.register(Hispanizaciones, ImportExportModelAdmin)
@@ -39,4 +41,4 @@ admin.site.register(RolEvento, ImportExportModelAdmin)
 admin.site.register(TiposInstitucion, TipoInstitucionAdmin)
 admin.site.register(Corporacion, ImportExportModelAdmin)
 admin.site.register(PersonaRolEvento, ImportExportModelAdmin)
-
+admin.site.register(Relationship, ImportExportModelAdmin)
