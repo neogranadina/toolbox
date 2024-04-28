@@ -172,11 +172,10 @@ class Documento(models.Model):
     tipo_udc = models.CharField(max_length=50, choices=UDC, default='lib')
     unidad_documental_compuesta = models.CharField(max_length=200)
     
-    #tipo_documento = models.CharField(max_length=100, choices=TIPOS_DOCUMENTALES, default='ccv')
     tipo_documento =  models.ForeignKey(TipoDocumental, on_delete=models.SET_NULL, default=1, null=True, related_name='tipo_documento')
     sigla_documento = models.CharField(max_length=100, null=True, blank=True)
     
-    titulo = models.CharField(max_length=200, unique=True)
+    titulo = models.CharField(max_length=200, unique=False)
     descripcion = models.TextField(blank=True, null=True)
     
     deteriorado = models.BooleanField(default=False)
