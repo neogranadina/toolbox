@@ -2,7 +2,7 @@ from import_export import resources
 from import_export.fields import Field
 from import_export.widgets import ForeignKeyWidget
 
-from .models import (SituacionLugar, TiposInstitucion, Documento)
+from .models import (Lugar, SituacionLugar, TiposInstitucion, Documento)
 
 class DocumentoResource(resources.ModelResource):
     documento_id = Field(attribute='documento_id', column_name='documento_id', saves_null_values=False)
@@ -11,6 +11,18 @@ class DocumentoResource(resources.ModelResource):
         model = Documento
         import_id_fields = ['documento_id']
         fields = ('documento_id', 'documento_idno', 'archivo', 'fondo', 'subfondo', 'serie', 'subserie', 'tipo_udc', 'unidad_documental_compuesta', 'tipo_documento', 'sigla_documento', 'titulo', 'descripcion', 'deteriorado', 'fecha_inicial', 'fecha_inicial_aproximada', 'fecha_final', 'fecha_final_aproximada', 'lugar_de_produccion', 'folio_inicial', 'folio_final', 'evento_valor_sp', 'evento_forma_de_pago', 'evento_total', 'notas', 'created_at', 'updated_at')
+        skip_unchanged = True
+        report_skipped = False
+
+class LugarResource(resources.ModelResource):
+    lugar_id = Field(attribute='lugar_id', column_name='lugar_id', saves_null_values=False)
+    
+    class Meta:
+        model = Lugar
+        import_id_fields = ['lugar_id']
+        fields = (
+            'lugar_id', 'nombre_lugar', 'otros_nombres', 'es_parte_de', 'lat', 'lon', 'tipo'
+        )
         skip_unchanged = True
         report_skipped = False
 
