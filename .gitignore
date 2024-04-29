@@ -15,3 +15,4 @@ prosopographic/cataloguers/0*.py
 esclavizados/migrations/0*.py
 *.csv
 esclavizados/
+toolboximport/importfiles

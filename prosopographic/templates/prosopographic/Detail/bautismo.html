@@ -9,7 +9,7 @@
     <div class="card mb-3">
         <div class="card-body">
             <h2 class="card-title">Acta: {{ bautismo.acta_bautismo }}</h2>
-            <p class="card-text">Bautizado: {{ bautismo.nombre_bautizado }}</p>
+            <p class="card-text">Bautizado: <a href="{% url 'persona-detail' bautismo.bautizado.pk %}">{{ bautismo.bautizado }}</a></p>
             <!-- ForeignKey Links -->
             {% if bautismo.lugar_bautismo %}
                 <p>Lugar de Bautismo: <a href="{% url 'lugar-detail' bautismo.lugar_bautismo.pk %}">{{ bautismo.lugar_bautismo }}</a></p>
