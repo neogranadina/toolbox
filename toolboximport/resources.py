@@ -58,6 +58,18 @@ class PersonaResource(resources.ModelResource):
         skip_unchanged = True
         report_skipped = False
 
+class BautismoResource(resources.ModelResource):
+    bautismo_id = Field(attribute='bautismo_id', column_name='bautismo_id', saves_null_values=False)
+    
+    class Meta:
+        model = Bautismo
+        import_id_fields = ['bautismo_id']
+        fields = (
+            'bautismo_id', 'bautismo_idno', 'acta_bautismo', 'bautizado', 'lugar_bautismo', 'fecha_bautismo', 'notas_fecha_bautismo', 'bautizado_procedencia', 'padre', 'madre', 'padrino', 'madrina'
+        )
+        skip_unchanged = True
+        report_skipped = False
+
 class EntierroResource(resources.ModelResource):
     entierro_id = Field(attribute='entierro_id', column_name='id', saves_null_values=False)
     persona = Field(
