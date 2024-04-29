@@ -129,10 +129,15 @@ class Persona(models.Model):
     def save(self, *args, **kwargs):
         # Update the full name whenever the instance is saved
         self.nombre_completo = f"{self.nombre} {self.apellidos}".strip()
-        if self.persona_id:
+        
+        if not self.pk:
+            super(Persona, self).save(*args, **kwargs)
+
+        
+        if self.pk:
             self.persona_idno = f"per-{str(self.persona_idno).zfill(6)}"
         super(Persona, self).save(*args, **kwargs)
-        if not self.persona_id: 
+        if not self.pk: 
             self.persona_idno = f"per-{str(self.persona_idno).zfill(6)}"
             super(Persona, self).save(*args, **kwargs)
 
