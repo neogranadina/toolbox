@@ -185,9 +185,9 @@ class Bautismo(models.Model):
             Relationship.objects.update_or_create(left_person=self.bautizado, relationship_type='hijo', right_person=self.madre)
         if self.padre and self.madre:
             Relationship.objects.update_or_create(
-                left_persona=self.padre, relationship_type='esposo', right_person=self.madre)
+                left_person=self.padre, relationship_type='esposo', right_person=self.madre)
             Relationship.objects.update_or_create(
-                left_persona=self.madre, relationship_type='esposa', right_person=self.padre)
+                left_person=self.madre, relationship_type='esposa', right_person=self.padre)
             
         if self.padrino:
             Relationship.objects.update_or_create(left_person=self.padrino, relationship_type='padrino', right_person=self.bautizado)
