@@ -174,6 +174,9 @@ class Bautismo(models.Model):
     
     def save(self, *args, **kwargs):
         
+        if not self.pk:
+            super(Bautismo, self).save(*args, **kwargs)
+        
         self.bautismo_idno = f"bau-{str(self.bautismo_idno).zfill(6)}"
         
         super(Bautismo, self).save(*args, **kwargs)
