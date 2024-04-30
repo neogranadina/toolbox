@@ -19,7 +19,7 @@
         <div class="col">
             <div class="card h-100" style="width: 16rem;">
                 <div class="card-body">
-                    <h5 class="card-title">Object id: {{ object.pk }}</h5>
+                    <h5 class="card-title">{{ object.bautismo_idno }}</h5>
                     <p class="card-text">{{ object.bautizado }}</p>
                     <p class="card-text">{{ object.fecha_bautismo }}</p>
                     <a href="{% url 'bautismo-detail' object.pk %}" class="btn btn-outline-secondary">Detalles</a>

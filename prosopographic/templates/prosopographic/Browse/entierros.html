@@ -19,7 +19,7 @@
         <div class="col">
             <div class="card h-100" style="width: 16rem;">
                 <div class="card-body">
-                    <h5 class="card-title">Object id: {{ object.pk }}</h5>
+                    <h5 class="card-title">Object id: {{ object.entierro_idno }}</h5>
                     <p class="card-text">{{ object.persona }}</p>
                     <p class="card-text">{{ object.fecha_entierro }}</p>
                     <a href="{% url 'entierro-detail' object.pk %}" class="btn btn-outline-secondary">Detalles</a>
