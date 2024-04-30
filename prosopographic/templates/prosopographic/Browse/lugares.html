@@ -22,6 +22,8 @@
         <a href="?sort=tipo" class="btn btn-outline-info">Ordenar por Tipo</a>
     </div>
 
+    {% include 'prosopographic/Browse/paginator.html' %}
+
     <!-- List Layout for Objects -->
     <ul class="list-group">
         {% for object in object_list %}

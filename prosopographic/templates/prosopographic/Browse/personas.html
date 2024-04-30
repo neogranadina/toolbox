@@ -23,6 +23,8 @@
         <!-- Add other sorting links as needed -->
     </div>
 
+    {% include 'prosopographic/Browse/paginator.html' %}
+
     <ul class="list-group">
         {% for object in object_list %}
         <li class="list-group-item d-flex justify-content-between align-items-start clickable-row" data-href="{% url 'persona-detail' object.pk %}">

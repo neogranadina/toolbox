@@ -228,6 +228,7 @@ class EntierroCreateView(CreateView):
 ## Browse views
 
 class DocumentoBrowse(ListView):
+    paginate_by = 12
     model = Documento
     template_name = 'prosopographic/Browse/documentos.html'
     
@@ -247,6 +248,7 @@ class DocumentoBrowse(ListView):
         return queryset.order_by(sort)
 
 class PersonaBrowse(ListView):
+    paginate_by = 12
     model = Persona
     template_name = 'prosopographic/Browse/personas.html'
     
@@ -265,6 +267,7 @@ class PersonaBrowse(ListView):
         return queryset.order_by(sort)
 
 class LugarBrowse(ListView):
+    paginate_by = 12
     model = Lugar
     template_name = 'prosopographic/Browse/lugares.html'
     
@@ -284,14 +287,17 @@ class LugarBrowse(ListView):
         return queryset.order_by(sort)
 
 class BautismoBrowse(ListView):
+    paginate_by = 12
     model = Bautismo
     template_name = 'prosopographic/Browse/bautismos.html'
 
 class MatrimonioBrowse(ListView):
+    paginate_by = 12
     model = Matrimonio
     template_name = 'prosopographic/Browse/matrimonios.html'
 
 class EntierroBrowse(ListView):
+    paginate_by = 12
     model = Entierro
     template_name = 'prosopographic/Browse/entierros.html'
 
