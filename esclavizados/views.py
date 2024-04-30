@@ -799,6 +799,7 @@ class RolesCreateView(CreateView):
 # Browse Views
 
 class ArchivoBrowse(ListView):
+    paginate_by = 12
     model = Archivo
     template_name = 'esclavizados/Browse/archivos.html'
 
@@ -818,6 +819,7 @@ class ArchivoBrowse(ListView):
         return queryset.order_by(sort)
 
 class DocumentoBrowse(ListView):
+    paginate_by = 12
     model = Documento
     template_name = 'esclavizados/Browse/documentos.html'
     
@@ -837,6 +839,7 @@ class DocumentoBrowse(ListView):
         return queryset.order_by(sort)
 
 class PersonaEsclavizadaBrowse(ListView):
+    paginate_by = 12
     model = PersonaEsclavizada
     template_name = 'esclavizados/Browse/personasesclavizadas.html'
     
@@ -858,6 +861,7 @@ class PersonaEsclavizadaBrowse(ListView):
 
 
 class PersonaNoEsclavizadaBrowse(ListView):
+    paginate_by = 12
     model = PersonaNoEsclavizada
     template_name = 'esclavizados/Browse/personasnoesclavizadas.html'
     
@@ -878,6 +882,7 @@ class PersonaNoEsclavizadaBrowse(ListView):
         return queryset.order_by(sort)
 
 class CorporacionBrowse(ListView):
+    paginate_by = 12
     model = Corporacion
     template_name = 'esclavizados/Browse/corporaciones.html'
     

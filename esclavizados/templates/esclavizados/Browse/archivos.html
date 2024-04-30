@@ -24,6 +24,8 @@
         <a href="?sort=title" class="btn btn-outline-info">Ordenar por Título</a>
     </div>
 
+    {% include 'paginator.html' %}
+
     <!-- Grid Layout for Objects -->
     <div class="list-group">
         {% for object in object_list %}
