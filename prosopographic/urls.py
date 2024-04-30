@@ -37,7 +37,7 @@ urlpatterns = [
     path("Detail/entierro/<int:pk>/", EntierroDetailView.as_view(), name="entierro-detail"),
     path("Detail/persona/<int:pk>/", PersonaDetailView.as_view(), name="persona-detail"),
     path("Detail/lugar/<int:pk>/", LugarDetailView.as_view(), name="lugar-detail"),
-    path("Detail/documento/<int:pk>/", DocumentoDetailView.as_view(), name="documento-detail"),
+    path("Detail/documento/<int:pk>/", DocumentoDetailView.as_view(), name="documento_detail"),
     # Browse
     path('Browse/bautismos', BautismoBrowse.as_view(), name="bautismo-browse"),
     path('Browse/matrimonios', MatrimonioBrowse.as_view(), name="matrimonio-browse"),

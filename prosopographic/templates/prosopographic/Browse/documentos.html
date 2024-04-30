@@ -27,12 +27,12 @@
     <!-- List Layout for Objects -->
     <ul class="list-group">
         {% for object in object_list %}
-        <li class="list-group-item d-flex justify-content-between align-items-start clickable-row" data-href="{% url 'documento-detail' object.pk %}">
+        <li class="list-group-item d-flex justify-content-between align-items-start clickable-row" data-href="{% url 'documento_detail' object.pk %}">
             <div class="ms-2 me-auto">
                 <div class="fw-bold">{{ object.titulo_documento }}</div>
                 <p class'mb-1'>Identificador: {{ object.identificador }}</p>
             </div>
-            {% comment %} <a href="{% url 'documento-detail' object.pk %}" class="btn btn-outline-secondary">Detalles</a> {% endcomment %}
+            {% comment %} <a href="{% url 'documento_detail' object.pk %}" class="btn btn-outline-secondary">Detalles</a> {% endcomment %}
         </li>
         {% empty %}
         <li class="list-group-item">
