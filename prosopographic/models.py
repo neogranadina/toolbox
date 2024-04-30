@@ -177,7 +177,7 @@ class Bautismo(models.Model):
         if not self.pk:
             super(Bautismo, self).save(*args, **kwargs)
         
-        self.bautismo_idno = f"bau-{str(self.bautismo_idno).zfill(6)}"
+        self.bautismo_idno = f"bau-{str(self.bautismo_id).zfill(6)}"
         
         super(Bautismo, self).save(*args, **kwargs)
         if self.padre:
