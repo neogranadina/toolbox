@@ -973,7 +973,7 @@ class DocumentoDetailView(DetailView):
         relationship_data = defaultdict(list)
         
         for relacion in personapersonarel:
-            naturaleza_rel = relacion.get_naturaleza_relacion_display()
+            naturaleza_rel = relacion.naturaleza_relacion
             relacion_data = {
                 'id_rel': relacion.persona_relacion_id,
                 'personas': [],

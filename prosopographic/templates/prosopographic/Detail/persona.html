@@ -10,6 +10,11 @@
         <div class="card-body">
             <h2 class="card-title">Nombre: {{ persona.nombre_completo }}</h2>
             <p class="card-text"> {{ persona.nombre_bautizado }}</p>
+
+            {% if bautismos %}
+            <h3>Documentos de bautismo:</h3>
+            {{ bautismos }}
+            {% endif %}
             <!-- ForeignKey Links -->
             <h3><i class="fas fa-users"></i> Relaciones:</h3>
         

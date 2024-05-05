@@ -315,6 +315,11 @@ class PersonaDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         persona = self.get_object()
 
+        bautizos = Bautismo.objects.filter(
+            models.Q(bautizado=persona) | models.Q(padre=persona) | models.Q(madre=persona) |
+            models.Q(padrino=persona) | models.Q(madrina=persona)
+        )
+
         # Fetch relationships where the current persona is either left_person or right_person
         relationships = Relationship.objects.filter(
             models.Q(left_person=persona) | models.Q(right_person=persona)
@@ -322,6 +327,7 @@ class PersonaDetailView(DetailView):
 
         # Adding relationships to context
         context['relationships'] = relationships
+        context['bautismos'] = bautizos
         return context
 
 class LugarDetailView(DetailView):
