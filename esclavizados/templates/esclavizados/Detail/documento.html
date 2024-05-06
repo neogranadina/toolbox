@@ -3,12 +3,11 @@
 {% block content %}
 {% load i18n %}
 {% load custom_filters %}
-{% csrf_token %}
 
 {% if perms.esclavizados.add_personaesclavizada %}
 
 <div class="d-flex flex-column flex-shrink-0 action-buttons">
-    <!-- Group 1: People, bg-info -->
+    <!-- Group 1: People -->
     <div class="bg-info sidebar-group">
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
             <li class="nav-item">
@@ -29,7 +28,7 @@
         </ul>
     </div>
 
-    <!-- Group 2: Institutions, bg-warning -->
+    <!-- Group 2: Institutions -->
     <div class="bg-warning sidebar-group">
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
             <li>
@@ -45,7 +44,7 @@
         </ul>
     </div>
 
-    <!-- Group 3: Relationships and Places, bg-success -->
+    <!-- Group 3: Relationships and Places -->
     <div class="bg-success sidebar-group">
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
             <li>
@@ -319,9 +318,9 @@
         $('#deleteConfirmationModal').modal('show');
     
         document.getElementById('deleteConfirmBtn').onclick = function() {
-            const csrftoken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            console.log("csrf_token");
-            console.log(csrftoken);
+            // get the csrf_token
+            const csrftoken = document.querySelector('input[name="csrfmiddlewaretoken"]').getAttribute('value');
+            // console.log(csrftoken);
             $.ajax({
                 url: deleteURL,
                 type: 'POST',

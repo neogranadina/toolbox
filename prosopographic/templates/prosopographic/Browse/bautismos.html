@@ -11,6 +11,18 @@
     </div>
     {% endif %}
 
+    <!-- Search Form -->
+    <form id="searchForm" action="" method="get" class="input-group mb-3">
+        <input type="text" name="q" class="form-control" placeholder="Buscar...">
+        <button type="submit" class="btn btn-outline-secondary">Buscar</button>
+        <button type="button" id="clearSearch" class="btn btn-outline-secondary">Limpiar</button>
+    </form>
+    
+    <div class="d-flex mb-4">
+        <a href="?sort=identificador" class="me-2 btn btn-outline-info">Ordenar por Identificador</a>
+        <a href="?sort=titulo_documento" class="btn btn-outline-info">Ordenar por Título de documento</a>
+    </div>
+
     {% include 'paginator.html' %}
 
     <!-- Grid Layout for Objects -->

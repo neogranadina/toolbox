@@ -212,6 +212,13 @@ class DocumentoForm(forms.ModelForm):
         label='Tipo documental'
     )
     
+    lugar_de_produccion = forms.ModelChoiceField(
+        queryset=Lugar.objects.all(),
+        required=False,
+        widget=autocomplete.ModelSelect2(url='lugar-autocomplete'),
+        label="Lugar de producción del documento"
+    )
+    
     def clean_fecha_inicial(self):
         
         fecha_inicial = self.cleaned_data.get('fecha_inicial')

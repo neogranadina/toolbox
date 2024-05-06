@@ -19,7 +19,8 @@ UDC = (
 
 SEXOS = (
         ('v', 'Varón'), 
-        ('m', 'Mujer')
+        ('m', 'Mujer'),
+        ('i', 'Indefinido')
     )
 
 HONORIFICOS = (

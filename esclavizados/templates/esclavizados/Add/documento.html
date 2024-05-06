@@ -101,7 +101,11 @@
             </div>
         </div>
         
-        
+        <div class="mb-3">
+            <label for="{{ form.lugar_de_produccion.id_for_label }}" class="form-label">{{ form.lugar_de_produccion.label }}</label>
+            {{ form.lugar_de_produccion }}
+            <button type="button" id="add_lugar_de_produccion" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir lugar"><i class="fas fa-map-marked"></i></button>
+        </div>
 
         <div class="mb-3">
             <label for="{{ form.evento_valor_sp.id_for_label }}" class="form-label">{% trans 'Valor en pesos de la transacción' %}</label>
@@ -170,6 +174,9 @@
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
         bindEventToButton('add_archivo', '#addArchivoModal .modal-content', "{% url 'archivo-new' %}", "#newArchivoForm", "{% url 'archivo-new' %}", 'id_archivo', '#addArchivoModal');
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        bindEventToButton('add_lugar_de_produccion', '#addLugarModal .modal-content', "{% url 'lugar-new' %}", "#newLugarForm", "{% url 'lugar-new' %}", 'id_lugar_de_produccion', '#addLugarModal');
     });
     
 </script>
