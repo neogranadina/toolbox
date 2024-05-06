@@ -290,6 +290,23 @@ class BautismoBrowse(ListView):
     paginate_by = 12
     model = Bautismo
     template_name = 'prosopographic/Browse/bautismos.html'
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        sort = self.request.GET.get('sort', 'bautismo_idno')
+        if sort not in ['bautismo_idno', 'acta_bautismo']:
+            sort = 'bautismo_idno'
+        
+        search_query = self.request.GET.get('q', None)
+        if search_query:
+            queryset = queryset.filter(
+                Q(acta_bautismo__titulo_documento__icontains=search_query) | 
+                Q(bautismo_idno__icontains=search_query) | 
+                Q(bautizado__nombre_completo__icontains=search_query)
+            )
+        
+        return queryset.order_by(sort)
+
 
 class MatrimonioBrowse(ListView):
     paginate_by = 12
