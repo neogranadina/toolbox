@@ -447,7 +447,7 @@ class PersonaRelaciones(models.Model):
     history = HistoricalRecords()
     
     def __str__(self) -> str:
-        return ', '.join([persona.nombre_normalizado for persona in self.personas.all()]) + f" - {self.get_naturaleza_relacion_display()}"
+        return ', '.join([persona.nombre_normalizado for persona in self.personas.all()]) + f" - {self.naturaleza_relacion}"
 
 
 class Relationship(models.Model):
