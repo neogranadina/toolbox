@@ -77,11 +77,12 @@ class Lugar(models.Model):
     lugar_idno = models.CharField(max_length=50, null=True, blank=True)
     
     nombre = models.CharField(max_length=100)
-    otros_nombres = models.TextField(null=True, blank=True) # array with all place alternatives names.
-    tipo = models.CharField(max_length=200, null=True, blank=True) # e.g., Country, State, City
+    otros_nombres = models.TextField(null=True, blank=True) 
+    tipo = models.CharField(max_length=200, null=True, blank=True)
+    notas_tipo = models.CharField(max_length=200, null=True, blank=True)
     lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    # ... other place details ...
+    notas_lugar = models.TextField(null=True, blank=True)
     
     history = HistoricalRecords()
     
