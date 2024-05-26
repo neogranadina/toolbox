@@ -9,7 +9,7 @@ echo $DATABASE_NAME
 # Set the date format, the database name, and the directory where you want to store your backups
 DATE=$(date +%Y%m%d)
 DB_NAME=$DATABASE_NAME
-BACKUP_DIR="/home/backups/apps/toolback/"
+BACKUP_DIR="/home/backups/apps/toolbox/"
 
 # use a secure options file
 MYSQL_CNF="~/.my.cnf"
