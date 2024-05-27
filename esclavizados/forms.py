@@ -196,12 +196,12 @@ class DocumentoForm(forms.ModelForm):
     folio_final = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _('folio final opcional')}), required=False)
     
     fecha_inicial = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'date-input', 'placeholder': _('DD-MM-AAAA, MM-AAAA, o AAAA.')}),
+        widget=forms.TextInput(attrs={'class': 'date-input', 'placeholder': _('AAAA-MM-DD, AAAA-MM, o AAAA.')}),
         required=True 
     )
     
     fecha_final = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'date-input', 'placeholder': _('DD-MM-AAAA, MM-AAAA, o AAAA.')}),
+        widget=forms.TextInput(attrs={'class': 'date-input', 'placeholder': _('AAAA-MM-DD, AAAA-MM, o AAAA.')}),
         required=False
     )
     
