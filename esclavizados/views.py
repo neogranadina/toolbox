@@ -103,7 +103,7 @@ class PersonaEsclavizadaAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         """ Search both in nombre_normalizado and in persona_idno
         """
-        if not (self.request.user.is_authenticated and self.request.user.has_perm('dbgestor.view_personaesclavizada')):
+        if not (self.request.user.is_authenticated and self.request.user.has_perm('esclavizados.view_personaesclavizada')):
             return PersonaEsclavizada.objects.none()
         qs = PersonaEsclavizada.objects.all().order_by('nombre_normalizado')
         if self.q:
@@ -117,7 +117,7 @@ class PersonaEsclavizadaAutocomplete(autocomplete.Select2QuerySetView):
 class PersonaNoEsclavizadaAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         
-        if not (self.request.user.is_authenticated and self.request.user.has_perm('dbgestor.view_personanoesclavizada')):
+        if not (self.request.user.is_authenticated and self.request.user.has_perm('esclavizados.view_personanoesclavizada')):
             return PersonaNoEsclavizada.objects.none()
         
         qs = PersonaNoEsclavizada.objects.all().order_by('nombre_normalizado')
@@ -131,7 +131,7 @@ class PersonaNoEsclavizadaAutocomplete(autocomplete.Select2QuerySetView):
 class PersonaAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         
-        if not (self.request.user.is_authenticated and self.request.user.has_perm('dbgestor.view_persona')):
+        if not (self.request.user.is_authenticated and self.request.user.has_perm('esclavizados.view_persona')):
             return Persona.objects.none()
         
         qs = Persona.objects.all().order_by('nombre_normalizado')
@@ -144,7 +144,7 @@ class PersonaAutocomplete(autocomplete.Select2QuerySetView):
 
 class InstitucionAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
-        if not (self.request.user.is_authenticated and self.request.user.has_perm('dbgestor.view_corporacion')):
+        if not (self.request.user.is_authenticated and self.request.user.has_perm('esclavizados.view_corporacion')):
             return Corporacion.objects.none()
         
         qs = Corporacion.objects.all().order_by('nombre_institucion')
