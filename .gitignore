@@ -17,3 +17,4 @@ esclavizados/migrations/0*.py
 *.csv
 toolboximport/importfiles
 appslogs
+temp

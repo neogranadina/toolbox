@@ -183,7 +183,7 @@
                     {% if perms.esclavizados.add_personanoesclavizada %}
                         <a href="{% url 'personanoesclavizada-update' personanoesclavizada.pk %}" class="btn btn-outline-primary me-2">Editar</a>
                     {% endif %}
-                    {% if perms.dbgraphic.delete_personanoesclavizada %}
+                    {% if perms.esclavizados.delete_personanoesclavizada %}
                         <a href="{% url 'personanoesclavizada-delete' personanoesclavizada.pk %}" class="btn btn-outline-danger">Borrar</a>
                     {% endif %}
                 </div>
