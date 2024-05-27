@@ -51,19 +51,19 @@ class CustomValidators:
             pass
         
         if len(date_text) > 10:
-            raise forms.ValidationError(f"El formato de la fecha {date_text} es incorrecto. Use DD-MM-AAAA, MM-AAAA, o AAAA.")
+            raise forms.ValidationError(f"El formato de la fecha {date_text} es incorrecto. Use AAAA-MM-DD, AAAA-MM, o AAAA.")
         
         try:
-            parsed_date = datetime.strptime(date_text, '%d-%m-%Y')
+            parsed_date = datetime.strptime(date_text, '%Y-%m-%d')
             return parsed_date.date()
         except ValueError:
             parts = date_text.split('-')
             if len(parts) == 1 and len(parts[0]) == 4:
                 return datetime.strptime(date_text, '%Y').date()
             elif len(parts) == 2:
-                return datetime.strptime(date_text, '%m-%Y').date()
+                return datetime.strptime(date_text, '%Y-%m').date()
             else:
-                raise forms.ValidationError(f"El formato de la fecha {date_text} es incorrecto. Use DD-MM-AAAA, MM-AAAA, o AAAA.")
+                raise forms.ValidationError(f"El formato de la fecha {date_text} es incorrecto. Use AAAA-MM-DD, AAAA-MM, o AAAA.")
 
 
     def validate_date_range(self, date_inicial, date_final):
