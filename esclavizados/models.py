@@ -319,7 +319,7 @@ class Persona(PolymorphicModel):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    #history = HistoricalRecords(inherit=True)
+    history = HistoricalRecords(inherit=True)
     
     def capitalize_name(self, name):
         
