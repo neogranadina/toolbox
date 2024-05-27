@@ -287,7 +287,6 @@ class Etonimos(models.Model):
 class Persona(PolymorphicModel):
     
     persona_id = models.AutoField(primary_key=True)
-    
     persona_idno = models.CharField(max_length=50, null=True, blank=True)
     
     documentos = models.ManyToManyField(Documento)
