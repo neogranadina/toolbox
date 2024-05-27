@@ -33,9 +33,8 @@ class Lugar(models.Model):
     
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name='created_by', blank=True, null=True)
     updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name='updated_by', blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords()
     
     def __str__(self) -> str:
         
@@ -53,8 +52,7 @@ class PlaceHistorical(models.Model):
     fecha_final = models.DateField(null=True, blank=True)
     otro_tipo = models.CharField(max_length=50, choices=PLACE_TYPE_CHOICES, help_text="¿Es un tipo diferente?", null=True, blank=True)
     narrativa = models.TextField(null=True, blank=True)
-    
-    history = HistoricalRecords()
+
     
     def __str__(self):
         return f"{self.otro_nombre} | {self.lugar.nombre_lugar} ({self.fecha_inicial} - {self.fecha_final or 'Present'})"

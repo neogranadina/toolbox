@@ -205,7 +205,7 @@ class LugarForm(forms.Form, forms.ModelForm):
 class DocumentoForm(forms.Form, forms.ModelForm):
     class Meta:
         model = Documento
-        fields = ['unidad_documental', 'identificador', 'titulo_documento', 'notas']
+        fields = ['unidad_documental_compuesta', 'documento_idno', 'titulo_documento', 'notas']
     
     # Fields related to Documento
     folio_inicial = forms.CharField(max_length=50)
@@ -270,8 +270,8 @@ class DocumentoForm(forms.Form, forms.ModelForm):
         imagen_final = self.cleaned_data['imagen_final']
         
         documento, created = Documento.objects.get_or_create(
-        unidad_documental=self.cleaned_data['unidad_documental'],
-        identificador=self.cleaned_data['identificador'],
+        unidad_documental_compuesta=self.cleaned_data['unidad_documental_compuesta'],
+        documento_idno=self.cleaned_data['documento_idno'],
         titulo_documento = self.cleaned_data['titulo_documento'],
         folios = f'{folio_inicial};{folio_final}',
         rango_imagenes = f'{imagen_inicial};{imagen_final}',

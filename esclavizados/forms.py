@@ -468,12 +468,6 @@ class PersonaLugarRelForm(forms.ModelForm):
         widget=autocomplete.ModelSelect2(url='situacion-autocomplete'),
         label='Sitación en el lugar', required=False,
     ) 
-    
-    def clean_ordinal(self):
-        data = self.cleaned_data['ordinal']
-        if data == 0:
-            raise ValidationError(_('0 no es un valor permitido.'))
-        return data
 
     def __init__(self, *args, **kwargs):
         super(PersonaLugarRelForm, self).__init__(*args, **kwargs)

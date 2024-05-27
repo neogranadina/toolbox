@@ -6,6 +6,66 @@ import logging
 
 logger = logging.getLogger("prosopographic")
 
+UDC = (
+        ('exp', 'Expediente'),
+        ('caj', 'Caja'),
+        ('vol', 'Volumen'),
+        ('lib', 'Libro'),
+        ('leg', 'Legajo')
+    )
+
+PLACE_TYPE_CHOICES = (
+        ('ciudad', 'Ciudad'),
+        ('pueblo', 'Pueblo'),
+        ('estado', 'Estado'),
+        ('gobernacion', 'Gobernación'),
+        ('pais', 'País'),
+        ('provincia', 'Provincia'),
+        ('villa', 'Villa'),
+        ('real', 'Real de Minas'),
+        ('parroquia', 'Parroquia'),
+        ('fuerte', 'Fuerte'),
+        ('puerto', 'Puerto'),
+        ('isla', 'Isla'),
+        ('region', 'Región'),
+        ('diocesis', 'Diócesis')
+    )
+
+class TipoDocumental(models.Model):
+    
+    tipo_documental = models.CharField(max_length=70, unique=True)
+    descripcion = models.TextField(null=True, blank=True)
+    
+    def __str__(self) -> str:
+        return f'{self.tipo_documental}'
+
+class TipoLugar(models.Model):
+    
+    tipo_lugar = models.CharField(max_length=70, unique=True)
+    descripcion = models.TextField(null=True, blank=True)
+    
+    def __str__(self) -> str:
+        return f'{self.tipo_lugar}'
+
+###############
+# Lugares
+###############
+
+class Lugar(models.Model):
+    
+    lugar_id = models.AutoField(primary_key=True)
+    nombre_lugar = models.CharField(max_length=255, null=True, blank=True)
+    otros_nombres = models.TextField(null=True, blank=True)
+    es_parte_de = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='children')
+    lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    
+    tipo = models.CharField(max_length=50, choices=PLACE_TYPE_CHOICES)
+
+    
+    def __str__(self) -> str:
+        return f"{self.nombre_lugar} ({self.tipo})"
+
 class Archivo(models.Model):
     
     archivo_id = models.AutoField(primary_key=True)
@@ -33,75 +93,55 @@ class Documento(models.Model):
     documento_id = models.AutoField(primary_key=True)
     documento_idno = models.CharField(max_length=50, null=True, blank=True)
     
-    archivo = models.ForeignKey(Archivo, on_delete=models.CASCADE, related_name='archivado_en')
+    archivo = models.ForeignKey(Archivo, on_delete=models.CASCADE)
+    fondo = models.CharField(max_length=200, null=True, blank=True)
+    subfondo = models.CharField(max_length=200, null=True, blank=True)
+    serie = models.CharField(max_length=200, null=True, blank=True)
+    subserie = models.CharField(max_length=200, null=True, blank=True)
+    tipo_udc = models.CharField(max_length=50, choices=UDC, default='lib')
+    unidad_documental_compuesta = models.CharField(max_length=200, null=True, blank=True)
     
-    unidad_documental = models.CharField(max_length=100)
-    identificador = models.CharField(max_length=50)
-    titulo_documento = models.CharField(max_length=100)
-    folios = models.TextField() # this one will store an array of two elements of this shape [3r,4v]
-    rango_imagenes = models.TextField() # this one will store an array of multiple images names or paths
+    tipo_documento =  models.ForeignKey(TipoDocumental, on_delete=models.SET_NULL, null=True, blank=True, related_name='tipo_documento')
+    sigla_documento = models.CharField(max_length=100, null=True, blank=True)
     
-    notas = models.TextField(null=True, blank=True)
-    condicion_documento = models.CharField(max_length=200, null=True, blank=True)
+    titulo_documento = models.CharField(max_length=200, unique=False)
+    descripcion = models.TextField(blank=True, null=True)
     
-    history = HistoricalRecords()
+    deteriorado = models.BooleanField(default=False)
     
-    def get_folios_json(self):
-        return json.loads(self.folios)
+    fecha_inicial = models.DateField(null=True, blank=True)
+    fecha_inicial_aproximada = models.BooleanField(null=True, blank=True)
+    fecha_final = models.DateField(null=True, blank=True)
+    fecha_final_aproximada = models.BooleanField(null=True, blank=True)
+    
+    lugar_de_produccion = models.ForeignKey(Lugar, on_delete=models.SET_NULL, null=True, blank=True, related_name='%(class)s_lugar_doc')
+    
+    folio_inicial = models.CharField(max_length=50, null=True, blank=True)
+    folio_final = models.CharField(max_length=50, null=True, blank=True)
+    
+    evento_valor_sp = models.CharField(max_length=50, null=True, blank=True)
+    evento_forma_de_pago = models.CharField(max_length=100, null=True, blank=True)
+    evento_total = models.CharField(max_length=100, null=True, blank=True)
+    
+    notas = models.TextField(max_length=500, null=True, blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-    def set_folios_json(self, value):
-        self.folios = json.dumps(value)
-
-    def get_rango_imagenes_json(self):
-        return json.loads(self.rango_imagenes)
-
-    def set_rango_imagenes_json(self, value):
-        self.rango_imagenes = json.dumps(value)
-    
-    def save(self, *args, **kwargs):
+    class Meta:
+        ordering = ['-updated_at']
         
-        if self.documento_id:
-            self.documento_idno = f"doc-{str(self.documento_id).zfill(6)}"
+    def save(self, *args, **kwargs):
+        self.documento_idno = f"co-esc-doc-{str(self.documento_id).zfill(6)}"
+
         super(Documento, self).save(*args, **kwargs)
-        if not self.documento_id: 
-            self.documento_idno = f"doc-{str(self.documento_id).zfill(6)}"
-            super(Documento, self).save(*args, **kwargs)
-    
-    def __str__(self):
-        return f"[{self.unidad_documental}.{self.identificador}] {self.titulo_documento}"
-    
-    
-class Lugar(models.Model):
-    
-    lugar_id = models.AutoField(primary_key=True)
-    lugar_idno = models.CharField(max_length=50, null=True, blank=True)
-    
-    nombre = models.CharField(max_length=100)
-    otros_nombres = models.TextField(null=True, blank=True) 
-    tipo = models.CharField(max_length=200, null=True, blank=True)
-    notas_tipo = models.CharField(max_length=200, null=True, blank=True)
-    lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    notas_lugar = models.TextField(null=True, blank=True)
-    
-    history = HistoricalRecords()
-    
-    def get_otros_nombres_json(self):
-        return json.loads(self.other_names)
 
-    def set_other_names_json(self, value):
-        self.other_names = json.dumps(value)
-    
-    def save(self, *args, **kwargs):
-        if self.lugar_id:
-            self.lugar_idno = f"lug-{str(self.lugar_id).zfill(6)}"
-        super(Lugar, self).save(*args, **kwargs)
-        if not self.lugar_id: 
-            self.lugar_idno = f"lug-{str(self.lugar_id).zfill(6)}"
-            super(Lugar, self).save(*args, **kwargs)
-        
     def __str__(self) -> str:
-        return f"{self.nombre}"
+        if self.sigla_documento:
+            return f'{self.archivo.nombre_abreviado}, {self.sigla_documento}: {self.titulo[:50]}'
+        else:
+            return f'{self.archivo.nombre_abreviado}: {self.titulo[:50]}'
+    
 
 class Persona(models.Model):
     
