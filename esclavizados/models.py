@@ -49,6 +49,12 @@ PLACE_TYPE_CHOICES = (
     )
 
 
+UNIDAD_EDAD = (
+    ("D", "Días"),
+    ("M", "Meses"),
+    ("A", "Años")
+)
+
 ###############
 # Vocabularies
 # Not so strict as controlled vocabularies, but a little more controled than a simple charfield.
@@ -373,6 +379,7 @@ class PersonaEsclavizada(Persona):
     This table expands Persona to specifics features regarding a Persona Esclavizada
     """
     edad = models.IntegerField(null=True, blank=True)
+    unidad_edad = models.CharField(max_length=1, choices=UNIDAD_EDAD, null=True, blank=True, default='A')
     altura = models.CharField(max_length=150, null=True, blank=True)
     cabello = models.CharField(max_length=150, null=True, blank=True)
     ojos = models.CharField(max_length=150, null=True, blank=True)

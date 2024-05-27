@@ -37,6 +37,12 @@
             {{ form.edad }}
         </div>
 
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">{% trans "Edad" %}</span>
+            {{ form.edad }} 
+            {{ form.unidad_edad }}
+          </div>
+
         <div class="mb-3">
             <label for="{{ form.altura.id_for_label }}" class="form-label">{{ form.altura.label }}</label>
             {{ form.altura }}
