@@ -380,6 +380,7 @@ class PersonaEsclavizada(Persona):
     """
     edad = models.IntegerField(null=True, blank=True)
     unidad_edad = models.CharField(max_length=1, choices=UNIDAD_EDAD, null=True, blank=True, default='A')
+    descriptor = models.CharField(max_length=50, blank=True, null=True)
     altura = models.CharField(max_length=150, null=True, blank=True)
     cabello = models.CharField(max_length=150, null=True, blank=True)
     ojos = models.CharField(max_length=150, null=True, blank=True)

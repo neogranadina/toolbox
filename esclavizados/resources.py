@@ -2,7 +2,18 @@ from import_export import resources
 from import_export.fields import Field
 from import_export.widgets import ForeignKeyWidget
 
-from .models import (Lugar, SituacionLugar, TiposInstitucion, Documento)
+from .models import (Actividades, Archivo, Hispanizaciones, Lugar, PersonaEsclavizada, PersonaNoEsclavizada, SituacionLugar, TiposInstitucion, Documento)
+
+class ArchivoResource(resources.ModelResource):
+    archivo_id = Field(attribute='archivo_id', column_name='archivo_id', saves_null_values=False)
+    
+    class Meta:
+        model = Archivo
+        import_id_fields = ['archivo_id']
+        fields = ('archivo_id', 'archivo_idno', 'nombre', 'nombre_abreviado', 'ubicacion_archivo', 
+                  'created_at', 'updated_at')
+        skip_unchanged = True
+        report_skipped = False
 
 class DocumentoResource(resources.ModelResource):
     documento_id = Field(attribute='documento_id', column_name='documento_id', saves_null_values=False)
@@ -47,5 +58,56 @@ class TipoInstitucionResource(resources.ModelResource):
         model = TiposInstitucion
         import_id_fields = ['tipo_id']
         fields = ('tipo_id', 'tipo', 'descripcion')
+        skip_unchanged = True
+        report_skipped = False
+        
+
+class PersonaEsclavizadaResource(resources.ModelResource):
+    persona_id =  Field(attribute='persona_id', column_name='persona_id', saves_null_values=False)
+    
+    class Meta:
+        model = PersonaEsclavizada
+        import_id_fields = ['persona_id']
+        fields = ('persona_id', 'persona_idno', 'documentos', 'nombres', 'apellidos', 'nombre_normalizado', 
+                  'entidades_asociadas', 'calidades', 'fecha_nacimiento', 'fecha_nacimiento_factual', 
+                  'lugar_nacimiento', 'fecha_defuncion', 'fecha_defuncion_factual', 'lugar_defuncion', 'sexo',
+                  'ocupacion', 'ocupacion_categoria', 'notas', 'created_at', 'updated_at', 'edad', 'unidad_edad', 
+                  'altura', 'cabello', 'ojos', 'hispanizacion', 'etnonimos', 'procedencia', 
+                  'procedencia_adicional', 'marcas_corporales', 'conducta', 'salud', 'descriptor')
+        skip_unchanged = True
+        report_skipped = False
+        
+class PersonaNoEsclavizadaResource(resources.ModelResource):
+    persona_id = Field(attribute='persona_id', column_name='persona_id', saves_null_values=False)
+    
+    class Meta:
+        model = PersonaNoEsclavizada
+        import_id_fields = ['persona_id']
+        fields = ('persona_id', 'persona_idno', 'documentos', 'nombres', 'apellidos', 'nombre_normalizado', 
+                  'entidades_asociadas', 'calidades', 'fecha_nacimiento', 'fecha_nacimiento_factual', 
+                  'lugar_nacimiento', 'fecha_defuncion', 'fecha_defuncion_factual', 'lugar_defuncion', 
+                  'sexo', 'ocupacion', 'ocupacion_categoria', 'notas', 'created_at', 'updated_at', 
+                  'entidad_asociada', 'honorifico')
+        skip_unchanged = True
+        report_skipped = False
+        
+
+class ActividadesResource(resources.ModelResource):
+    actividad_id = Field(attribute='actividad_id', column_name='actividad_id', saves_null_values=False)
+    
+    class Meta:
+        model =  Actividades
+        import_id_fields = ['actividad_id']
+        fields = ('actividad_id', 'actividad', 'descripcion')
+        skip_unchanged = True
+        report_skipped = False
+        
+class HispanizacionResource(resources.ModelResource):
+    hispanizacion_id = Field(attribute='hispanizacion_id', column_name='hispanizacion_id', saves_null_values=False)
+    
+    class Meta:
+        model = Hispanizaciones
+        import_id_fields = ['hispanizacion_id']
+        fields = ('hispanizacion_id', 'hispanizacion', 'descripcion')
         skip_unchanged = True
         report_skipped = False

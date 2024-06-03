@@ -277,7 +277,7 @@ class ArchivoCreateView(CreateView):
     model = Archivo
     form_class = ArchivoForm
     template_name = 'esclavizados/Add/archivo.html'
-    success_url = reverse_lazy('archivo-browser')
+    success_url = reverse_lazy('archivo-browse')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -305,7 +305,8 @@ class ArchivoCreateView(CreateView):
         return super().form_valid(form)
     
     def get_success_url(self):
-        return reverse_lazy('archivo-detail', kwargs={'pk': self.object.pk})
+        next_url = self.request.POST.get('next', self.success_url)
+        return next_url if next_url else reverse_lazy('archivo-detail', kwargs={'pk': self.object.pk})
         
 
 class DocumentoCreateView(CreateView):
@@ -356,13 +357,8 @@ class DocumentoCreateView(CreateView):
         return super().form_valid(form)
     
     def get_success_url(self):
-        archivo_initial = self.request.GET.get('archivo_initial')
-        if archivo_initial:
-            return reverse('archivo-detail', kwargs={
-                'pk': archivo_initial
-            })
-        else:
-            return reverse_lazy('documento-detail', kwargs={'pk': self.object.pk})
+        next_url = self.request.POST.get('next', '')
+        return next_url if next_url else self.success_url
 
     def get_initial(self):
         initial = super().get_initial()
@@ -1167,6 +1163,10 @@ class DocumentoUpdateView(UpdateView):
         kwargs = super(DocumentoUpdateView, self).get_form_kwargs()
         
         return kwargs
+    
+    def get_success_url(self):
+        next_url = self.request.POST.get('next', '')
+        return next_url if next_url else self.success_url
 
 
 class PersonaEsclavizadaUpdateView(UpdateView):
@@ -1287,6 +1287,9 @@ class DocumentoDeleteView(DeleteView):
         context['action'] = 'borrar'
         return context
     
+    def get_success_url(self):
+        next_url = self.request.POST.get('next', '')
+        return next_url if next_url else self.success_url
 
 class PersonaDeleteView(DeleteView):
     model = Persona

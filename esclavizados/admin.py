@@ -4,7 +4,9 @@ from import_export.admin import ImportExportModelAdmin
 
 # resources
 
-from .resources import SituacionLugarResource, TipoInstitucionResource, DocumentoResource, LugarResource
+from .resources import (ArchivoResource, SituacionLugarResource, TipoInstitucionResource, DocumentoResource, LugarResource,
+                        PersonaEsclavizadaResource, PersonaNoEsclavizadaResource, ActividadesResource,
+                        HispanizacionResource)
 
 # Register your models here.
 from .models import Lugar, PersonaRolEvento
@@ -25,16 +27,31 @@ class SituacionLugarAdmin(ImportExportModelAdmin):
     
 class TipoInstitucionAdmin(ImportExportModelAdmin):
     resource_class = TipoInstitucionResource
+    
+class PersonaEsclavizadaAdmin(ImportExportModelAdmin):
+    resource_class = PersonaEsclavizadaResource
+    
+class PersonaNoEsclavizadaAdmin(ImportExportModelAdmin):
+    resource_class = PersonaNoEsclavizadaResource
+    
+class ActividadesAdmin(ImportExportModelAdmin):
+    resource_class = ActividadesResource
+    
+class HispanizacionesAdmin(ImportExportModelAdmin):
+    resource_class = HispanizacionResource
+    
+class ArchivoAdmin(ImportExportModelAdmin):
+    resource_class = ArchivoResource
 
-admin.site.register(Archivo, ImportExportModelAdmin)
+admin.site.register(Archivo, ArchivoAdmin)
 admin.site.register(Calidades, ImportExportModelAdmin)
 admin.site.register(Documento, DocumentoResourceAdmin)
-admin.site.register(Actividades, ImportExportModelAdmin)
+admin.site.register(Actividades, ActividadesAdmin)
 admin.site.register(Etonimos, ImportExportModelAdmin)
-admin.site.register(Hispanizaciones, ImportExportModelAdmin)
+admin.site.register(Hispanizaciones, HispanizacionesAdmin)
 admin.site.register(Lugar, LugarResourceAdmin)
-admin.site.register(PersonaEsclavizada, ImportExportModelAdmin)
-admin.site.register(PersonaNoEsclavizada, ImportExportModelAdmin)
+admin.site.register(PersonaEsclavizada, PersonaEsclavizadaAdmin)
+admin.site.register(PersonaNoEsclavizada, PersonaNoEsclavizadaAdmin)
 admin.site.register(PersonaRelaciones, ImportExportModelAdmin)
 admin.site.register(PersonaLugarRel, ImportExportModelAdmin)
 admin.site.register(SituacionLugar, SituacionLugarAdmin)

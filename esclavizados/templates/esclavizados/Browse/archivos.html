@@ -14,7 +14,7 @@
 
         <!-- Create New Object Button -->
         <div class="mb-3">
-            <a href="{% url 'archivo-new' %}" class="btn btn-info"><i class="fas fa-plus-circle"></i> Crear un archivo</a>
+            <a href="{% url 'archivo-new' %}?next={{ request.path }}" class="btn btn-info"><i class="fas fa-plus-circle"></i> Crear un archivo</a>
         </div>
     {% endif %}
 

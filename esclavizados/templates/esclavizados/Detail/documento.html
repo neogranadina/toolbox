@@ -89,10 +89,10 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
                 {% if perms.esclavizados.add_documento %}
-                    <a href="{% url 'documento-update' documento.pk %}" class="btn btn-outline-primary">Editar</a>
+                    <a href="{% url 'documento-update' documento.pk %}?next={{ request.path }}" class="btn btn-outline-primary">Editar</a>
                 {% endif %}
                 {% if perms.esclavizados.delete_documento %}
-                    <a href="{% url 'documento-delete' documento.pk %}" class="btn btn-outline-danger">Borrar</a>
+                    <a href="{% url 'documento-delete' documento.pk %}?next={{ request.path }}" class="btn btn-outline-danger">Borrar</a>
                 {% endif %}
             </div>
         </div>

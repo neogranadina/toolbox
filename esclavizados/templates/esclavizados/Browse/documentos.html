@@ -13,7 +13,7 @@
 
         <!-- Create New Object Button -->
         <div class="mb-3">
-            <a href="{% url 'documento-new' %}" class="btn btn-info"><i class="fas fa-file-medical" aria-hidden="true"></i> Crear un documento</a>
+            <a href="{% url 'documento-new' %}?next={{ request.path }}" class="btn btn-info"><i class="fas fa-file-medical" aria-hidden="true"></i> Crear un documento</a>
         </div>
     {% endif %}
 
