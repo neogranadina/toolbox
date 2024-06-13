@@ -5,14 +5,21 @@
 <div class="container mt-4">
     <!-- Hero Section -->
     <div class="jumbotron text-center">
-        <h1 class="display-4">Neogranadina Toolbox</h1>
-        <p class="lead">Plataforma para la catalogación y descripción colaborativa</p>
+        <!-- Logo Image -->
+        <img src="{% static 'prosopographic/media/fisqua-logo.png' %}" alt="Fisqua Logo" class="img-fluid" style="max-width: 200px; margin-bottom: 20px;">
+        
+        <h1 class="display-4"></h1>
+        <p class="lead">Plataforma para el registro de individuos de la América Latina</p>
         <hr class="my-4">
         {% if user.is_authenticated %}
         
         <p>Escoge el aplicativo para ingresar</p>
-        <a class="btn btn-primary btn-lg" href="{% url 'home_parroquia' %}" role="button">Registros Parroquiales</a>
-        <a class="btn btn-primary btn-lg" href="{% url 'home_esc' %}" role="button">Personas Esclavizadas</a>
+            {% if perms.prosopographic.view_archivo %}
+            <a class="btn btn-primary btn-lg" href="{% url 'home_parroquia' %}" role="button">Registros Parroquiales</a>
+            {% endif %}
+            {% if perms.esclavizados.view_archivo %}
+            <a class="btn btn-primary btn-lg" href="{% url 'home_esc' %}" role="button">Personas Esclavizadas</a>
+            {% endif %}
         {% else %}
         <p>Debes <a href={% url 'login' %}>ingresar</a> para poder interactuar con el Toolbox</p>
         {% endif %}

@@ -10,7 +10,7 @@ from .resources import (ArchivoResource, SituacionLugarResource, TipoInstitucion
 
 # Register your models here.
 from .models import Lugar, PersonaRolEvento
-from .models import Archivo, Documento
+from .models import Archivo, Documento, Persona
 from .models import Calidades, Actividades, Hispanizaciones, Etonimos
 from .models import SituacionLugar, TipoDocumental, TipoLugar, TiposInstitucion
 from .models import PersonaEsclavizada, PersonaNoEsclavizada, Corporacion
@@ -62,3 +62,4 @@ admin.site.register(TiposInstitucion, TipoInstitucionAdmin)
 admin.site.register(Corporacion, ImportExportModelAdmin)
 admin.site.register(PersonaRolEvento, ImportExportModelAdmin)
 admin.site.register(Relationship, ImportExportModelAdmin)
+admin.site.register(Persona, ImportExportModelAdmin)
