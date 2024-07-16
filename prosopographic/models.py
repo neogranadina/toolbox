@@ -138,9 +138,9 @@ class Documento(models.Model):
 
     def __str__(self) -> str:
         if self.sigla_documento:
-            return f'{self.archivo.nombre_abreviado}, {self.sigla_documento}: {self.titulo[:50]}'
+            return f'{self.archivo.archivo_sigla}, {self.sigla_documento}: {self.titulo_documento[:50]}'
         else:
-            return f'{self.archivo.nombre_abreviado}: {self.titulo[:50]}'
+            return f'{self.archivo.archivo_sigla}: {self.titulo_documento[:50]}'
     
 
 class Persona(models.Model):

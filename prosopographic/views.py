@@ -234,15 +234,15 @@ class DocumentoBrowse(ListView):
     
     def get_queryset(self):
         queryset = super().get_queryset()
-        sort = self.request.GET.get('sort', 'identificador')
-        if sort not in ['identificador', 'titulo_documento']:
-            sort = 'identificador'
+        sort = self.request.GET.get('sort', 'documento_idno')
+        if sort not in ['documento_idno', 'titulo_documento']:
+            sort = 'documento_idno'
         
         search_query = self.request.GET.get('q', None)
         if search_query:
             queryset = queryset.filter(
                 Q(titulo_documento__icontains=search_query) | 
-                Q(identificador__icontains=search_query)
+                Q(documento_idno__icontains=search_query)
             )
         
         return queryset.order_by(sort)
@@ -273,14 +273,14 @@ class LugarBrowse(ListView):
     
     def get_queryset(self):
         queryset = super().get_queryset()
-        sort = self.request.GET.get('sort', 'nombre')
-        if sort not in ['nombre', 'tipo']:
-            sort = 'nombre'
+        sort = self.request.GET.get('sort', 'nombre_lugar')
+        if sort not in ['nombre_lugar', 'tipo']:
+            sort = 'nombre_lugar'
         
         search_query = self.request.GET.get('q', None)
         if search_query:
             queryset = queryset.filter(
-                Q(nombre__icontains=search_query) | 
+                Q(nombre_lugar__icontains=search_query) | 
                 Q(tipo__icontains=search_query)
             )
         
